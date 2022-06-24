@@ -28,7 +28,7 @@ public class InterList extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		request.getRequestDispatcher("views/board/InterList.jsp").forward(request, response);
-		
+		// asdfasdfasdfasdf
 		
 	}
 
