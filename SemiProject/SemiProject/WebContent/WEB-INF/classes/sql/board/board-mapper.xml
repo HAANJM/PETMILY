@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+
+	<comment>보드관련 쿼리문들</comment>
+	
+	<entry key="selectInterListAN">
+		SELECT ANIMAL_NO, CATEGORY_NAME, ANIMAL_NAME, GENDER, NEUTRALIZATION, ANIMAL_AGE, ANIMAL_WEIGHT
+		  FROM ANIMAL_INFO
+		  JOIN CATEGORY USING(CATEGORY_NO)
+		WHERE ANIMAL_NO IN (SELECT ANIMAL_NO
+		                      FROM INTEREST_LIST
+		                     WHERE USER_NO = ?
+		                       AND TYPE = 'A')
+	
+	
+	
+	</entry>
+	
+	<entry key="selectInterListPR">
+		SELECT PRODUCT_NO, CATEGORY_NAME, PRODUCT_NAME, PRICE
+		  FROM PRODUCT
+		  JOIN CATEGORY USING(CATEGORY_NO)
+		 WHERE PRODUCT_NO IN (SELECT PRODUCT_NO 
+		                      FROM INTEREST_LIST 
+		                     WHERE USER_NO = ?
+		                       AND TYPE = 'P')
+				
+	
+	
+	</entry>
+	
+	<entry key="selectAdoptComment">
+		SELECT COM_NO, USER_NO, CREATE_DATE, COM_TITLE, COUNT
+		FROM COMMUNITY
+		WHERE USER_NO = ? AND COM_TYPE = 1 AND STATUS = 'Y';
+	
+	</entry>
+	
+	
+
+
+</properties>
