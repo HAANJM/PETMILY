@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-<%@ page import= "com.kh.member.model.vo.Member, java.util.ArrayList, com.kh.product.model.vo.Product" %>
+<%@ page import= "com.kh.member.model.vo.Member" %>
     
 <%
 
@@ -10,18 +10,17 @@
 	String contextPath = request.getContextPath();
 	
 	String userNickname = loginUser.getUserNickname();
-		
 	String userClass = loginUser.getUserClass();
-
-    ArrayList<Product> listPR = (ArrayList<Product>)session.getAttribute("interListPR");
 
 
 %>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>마이페이지</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <style>
         div{
             box-sizing: border-box;
@@ -153,6 +152,7 @@
         #footer{
             background-color: gray;
         }
+       
     </style>
 </head>
 <body>
@@ -167,7 +167,7 @@
             <div id="header_2">
                 <div id="login-area">
                 
-                	<b><%= userNickname %>님 환영합니다!</b> <br><br>
+                	<b><%= loginUser.getUserNickname() %>님 환영합니다!</b> <br><br>
                 	<div align="right">
                 		<a href="<%= contextPath %>/myPage.me">마이페이지</a>
                 		<a href="<%= contextPath %>/logout.me">로그아웃</a>
@@ -212,7 +212,7 @@
                     <!-- 사용자만 보이는 영역-->
                     <% if(userClass.equals("P")) { %>
                         <p>회원 정보 관리</p>
-                        <li><a href="<%= contextPath %>/profile.me">내 프로필 수정</a></li>
+                        <li><a href="#">내 프로필 수정</a></li>
                         <li><a href="#">회원 정보 수정</a></li>
                         <li><a href="<%= contextPath %>/deletePage.me">회원 탈퇴</a></li>
                        
@@ -224,9 +224,9 @@
                         <li><a href="#">구매내역/배송조회</a></li>
                         <li><a href="#">내가 쓴 리뷰 조회</a></li>
                        
-                       <p><a href="<%= contextPath %>/interList.bo">관심 목록</a></p>
-                        <li><a href="<%= contextPath %>/interListAN.bo">관심 등록 동물 보기</a></li>
-                        <li><a href="<%= contextPath %>/interListPR.bo">관심 등록 굿즈 보기</a></li>
+                       <p>관심 목록</p>
+                        <li><a href="#">관심 등록 동물 보기</a></li>
+                        <li><a href="#">관심 등록 굿즈 보기</a></li>
                        
                        <p>고객센터</p>
                         <li><a href="#">1:1 문의하기</a></li>
@@ -235,7 +235,7 @@
                        
                     <%  } else { %>
                             <p>회원 정보 관리</p>
-                            <li><a href="<%= contextPath %>/profile.me">내 프로필 수정</a></li>
+                            <li><a href="#">내 프로필 수정</a></li>
                             <li><a href="#">회원 정보 수정</a></li>
                             <li><a href="<%= contextPath %>/deletePage.me">회원 탈퇴</a></li>
                            
@@ -277,32 +277,27 @@
             </div>
             <div id="content_2">
                 <div id="content-area">
-                	
-                    <div>
-                        <h2>관심 등록 상품</h2>
-                        <% if(listPR.isEmpty()){ %>
-                            <h4>관심 등록 상품이 없습니다~</h4>
-                        <% } else { %>    
-                        <table align="center">
-                            <thead>
+                	<div id="delete-area">
+                        <h3>회 원 탈 퇴</h3>
+                        <pre>회원탈퇴에관한설명어쩌고저쩌고이러쿵저러쿵</pre>
+                        <form id="delete-form" method="post">
+                            <table>
                                 <tr>
-                                    <th width="250">상품 이름</th>
-                                    <th width="250">상품 가격</th>
+                                    <th>아이디</th>
+                                    <td><input type="text" name="userId" value="<%= loginUser.getUserId() %>" readonly></td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                <% for(Product p : listPR) { %>
-                                    <tr>
-                                        <td><%= p.getProductName() %></td>
-                                        <td><%= p.getPrice() %></td>
-                                    </tr>
-                                <% } %>
-                            </tbody>
-
-                        </table>
-                        <% } %>
+                                <tr>
+                                    <th>비밀번호</th>
+                                    <td><input type="password" name="userPwd" required></td>
+                                </tr>
+                                <tr>
+                                    <th><input type="checkbox" name="deleteCheck"></th>
+                                    <td>회원탈퇴 시 모든 정보는 복구되지않으며 어쩌고저쩌고 동의하십니까?</td>
+                                </tr>             
+                            </table>
+                            <button type="submit" id="delete-btn">회원탈퇴</button>
+                        </form>
                     </div>
-
                 </div>
             </div>
         </div><!--content-->
@@ -312,6 +307,39 @@
         <div id="footer">
         </div><!--footer-->
     </div>
+    
+    <script>
+
+       /* $("input:checkbox[name='deleteCheck']").click(function(){
+            if($(this).is(":checked")){
+                $("#delete-btn").removeAttr("disabled");
+            }
+            else{
+                $("#delete-btn").attr("disabled", true);
+            }
+
+        });
+        */
+
+       $("#delete-btn").click(function(){
+
+            if(!$("input:checkbox[name='deleteCheck']").is(":checked")){
+                alert("정보처리약관에 동의해주세요.")
+            }
+            else{
+                var result = confirm("정말로 탈퇴하시겠습니까? 모든 정보는 복구되지 않습니다.");
+
+                if(result){
+                    $("#delete-form").attr('action', "<%= contextPath %>/delete.me");
+                }
+
+            }
+           
+
+
+       })
+
+    </script>
     
 </body>
 </html>

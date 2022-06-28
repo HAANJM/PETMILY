@@ -1,22 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-<%@ page import= "com.kh.member.model.vo.Member, java.util.ArrayList, com.kh.product.model.vo.Product" %>
+<%@ page import= "com.kh.member.model.vo.Member" %>
     
 <%
 
 	Member loginUser = (Member)session.getAttribute("loginUser");
 	
 	String contextPath = request.getContextPath();
-	
-	String userNickname = loginUser.getUserNickname();
-		
+    String userNickname = loginUser.getUserNickname();
 	String userClass = loginUser.getUserClass();
-
-    ArrayList<Product> listPR = (ArrayList<Product>)session.getAttribute("interListPR");
 
 
 %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -167,7 +164,7 @@
             <div id="header_2">
                 <div id="login-area">
                 
-                	<b><%= userNickname %>님 환영합니다!</b> <br><br>
+                	<b><%= loginUser.getUserNickname() %>님 환영합니다!</b> <br><br>
                 	<div align="right">
                 		<a href="<%= contextPath %>/myPage.me">마이페이지</a>
                 		<a href="<%= contextPath %>/logout.me">로그아웃</a>
@@ -212,7 +209,7 @@
                     <!-- 사용자만 보이는 영역-->
                     <% if(userClass.equals("P")) { %>
                         <p>회원 정보 관리</p>
-                        <li><a href="<%= contextPath %>/profile.me">내 프로필 수정</a></li>
+                        <li><a href="#">내 프로필 수정</a></li>
                         <li><a href="#">회원 정보 수정</a></li>
                         <li><a href="<%= contextPath %>/deletePage.me">회원 탈퇴</a></li>
                        
@@ -224,9 +221,9 @@
                         <li><a href="#">구매내역/배송조회</a></li>
                         <li><a href="#">내가 쓴 리뷰 조회</a></li>
                        
-                       <p><a href="<%= contextPath %>/interList.bo">관심 목록</a></p>
-                        <li><a href="<%= contextPath %>/interListAN.bo">관심 등록 동물 보기</a></li>
-                        <li><a href="<%= contextPath %>/interListPR.bo">관심 등록 굿즈 보기</a></li>
+                       <p>관심 목록</p>
+                        <li><a href="#">관심 등록 동물 보기</a></li>
+                        <li><a href="#">관심 등록 굿즈 보기</a></li>
                        
                        <p>고객센터</p>
                         <li><a href="#">1:1 문의하기</a></li>
@@ -235,7 +232,7 @@
                        
                     <%  } else { %>
                             <p>회원 정보 관리</p>
-                            <li><a href="<%= contextPath %>/profile.me">내 프로필 수정</a></li>
+                            <li><a href="#">내 프로필 수정</a></li>
                             <li><a href="#">회원 정보 수정</a></li>
                             <li><a href="<%= contextPath %>/deletePage.me">회원 탈퇴</a></li>
                            
@@ -277,32 +274,28 @@
             </div>
             <div id="content_2">
                 <div id="content-area">
-                	
-                    <div>
-                        <h2>관심 등록 상품</h2>
-                        <% if(listPR.isEmpty()){ %>
-                            <h4>관심 등록 상품이 없습니다~</h4>
-                        <% } else { %>    
-                        <table align="center">
-                            <thead>
+                	<div id="profile-area" align="center">
+                        <form id="profile-form" action="<%= contextPath %>/updateProfile.me" method="post">
+
+                            <input type="hidden" name="userNo" value="<%= loginUser.getUserNo() %>">
+
+                            <table>
                                 <tr>
-                                    <th width="250">상품 이름</th>
-                                    <th width="250">상품 가격</th>
+                                    <td><img id="propfileImg" width="250px" height="250px"></td>
+                                    <td>
+                                        <div>
+                                            <p>닉네임<input type="text" name="nickname" value="<%= loginUser.getUserNickname() %>"></p>
+                                        </div>
+                                    </td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                <% for(Product p : listPR) { %>
-                                    <tr>
-                                        <td><%= p.getProductName() %></td>
-                                        <td><%= p.getPrice() %></td>
-                                    </tr>
-                                <% } %>
-                            </tbody>
-
-                        </table>
-                        <% } %>
-                    </div>
-
+                            </table>
+                            <button for="imgFile">프로필 사진 첨부하기</button>
+                            <button for="deleteFile">기본 이미지로</button>
+                            <br><br><br>
+                            <button type="submit">적용하기</button>
+                            <a href="<%= contextPath %>/myPage.me">취소하기</a>
+                        </form>
+                	</div>
                 </div>
             </div>
         </div><!--content-->

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-<%@ page import= "com.kh.member.model.vo.Member, java.util.ArrayList, com.kh.product.model.vo.Product" %>
+<%@ page import= "com.kh.member.model.vo.Member" %>
     
 <%
 
@@ -9,11 +9,11 @@
 	
 	String contextPath = request.getContextPath();
 	
+	String alertMsg = (String)session.getAttribute("alertMsg");
+	
 	String userNickname = loginUser.getUserNickname();
 		
 	String userClass = loginUser.getUserClass();
-
-    ArrayList<Product> listPR = (ArrayList<Product>)session.getAttribute("interListPR");
 
 
 %>
@@ -122,7 +122,15 @@
 
             text-decoration-line: none;
             
-        }#content_1 > #admin-area > li > a {
+        }
+        #content_1 > #user-area > p > a {
+            
+            color: black;
+
+            text-decoration-line: none;
+            
+        }
+        #content_1 > #admin-area > li > a {
             
             color: black;
 
@@ -157,6 +165,19 @@
 </head>
 <body>
 
+
+<script>
+
+    var msg = "<%= alertMsg %>";
+
+    if(msg != "null"){
+
+        alert(msg);
+        <% session.removeAttribute("alertMsg"); %>
+        
+    }
+
+</script>
 
     <div class="wrap">
 
@@ -217,7 +238,7 @@
                         <li><a href="<%= contextPath %>/deletePage.me">회원 탈퇴</a></li>
                        
                        <p>내가 쓴 글 조회</p>
-                        <li><a href="#">입양 후기 게시글 조회</a></li>
+                        <li><a href="<%= contextPath %>/adoptComment.bo">입양 후기 게시글 조회</a></li>
                        
                        <p>굿즈샵</p>
                         <li><a href="#">장바구니</a></li>
@@ -277,32 +298,21 @@
             </div>
             <div id="content_2">
                 <div id="content-area">
-                	
-                    <div>
-                        <h2>관심 등록 상품</h2>
-                        <% if(listPR.isEmpty()){ %>
-                            <h4>관심 등록 상품이 없습니다~</h4>
-                        <% } else { %>    
-                        <table align="center">
-                            <thead>
-                                <tr>
-                                    <th width="250">상품 이름</th>
-                                    <th width="250">상품 가격</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <% for(Product p : listPR) { %>
-                                    <tr>
-                                        <td><%= p.getProductName() %></td>
-                                        <td><%= p.getPrice() %></td>
-                                    </tr>
-                                <% } %>
-                            </tbody>
-
+                	<div id="profile-area" align="center">
+                        <table>
+                            <tr>
+                		        <td><img src="../resources/rabbit.jpg" width="250px" height="250px"></td>
+                                <td>
+                                    <div>
+                                        <p>[개인]<%= userNickname %></p>
+                                        <p><%= loginUser.getEmail() %>  <%= loginUser.getBirthDate() %></p>
+                                        <p><%= loginUser.getPhone() %></p>
+                                    </div>
+                                </td>
+                            </tr>
+                            
                         </table>
-                        <% } %>
-                    </div>
-
+                	</div>
                 </div>
             </div>
         </div><!--content-->

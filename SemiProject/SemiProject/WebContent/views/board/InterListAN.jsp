@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-<%@ page import= "com.kh.member.model.vo.Member" %>
+<%@ page import= "com.kh.member.model.vo.Member, com.kh.adoption.model.vo.Animal, java.util.ArrayList" %>
     
 <%
 
@@ -9,7 +9,7 @@
 	
 	String contextPath = request.getContextPath();
 	
-	String alertMsg = (String)session.getAttribute("alertMsg");
+    ArrayList<Animal> listAN = (ArrayList<Animal>)session.getAttribute("interListAN");
 	
 	String userNickname = loginUser.getUserNickname();
 		
@@ -158,19 +158,6 @@
 <body>
 
 
-<script>
-
-    var msg = "<%= alertMsg %>";
-
-    if(msg != "null"){
-
-        alert(msg);
-        <% session.removeAttribute("alertMsg"); %>
-        
-    }
-
-</script>
-
     <div class="wrap">
 
         <div id="header">
@@ -293,33 +280,33 @@
                 	
                     <div>
                         <h3>관심 등록 동물</h3>
+                        <% if(listAN.isEmpty()) { %>
+                            <h4>관심 등록 동물이 없습니다~</h4>
+                        <% } else { %>    
                         <table align="center">
                             <thead>
                                 <tr>
-                                    <th width="250">게시글 번호</th>
-                                    <th width="250">게시글 제목</th>
-                                    <th width="250">작성일</th>
+                                    <th width="100">동물 종류</th>
+                                    <th width="100">동물 이름</th>
+                                    <th width="150">성별/중성화 여부</th>
+                                    <th width="100">나이</th>
+                                    <th width="100">몸무게</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>3</td>
-                                    <td>귀여워요~</td>
-                                    <td>2022.06.24</td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>너무 착해요~</td>
-                                    <td>2021.05.24</td>
-                                </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>첫째에요~</td>
-                                    <td>2019.07.01</td>
-                                </tr>
+                                <% for(Animal a : listAN) { %>
+                                    <tr>
+                                        <td><%= a.getCategoryName() %></td>
+                                        <td><%= a.getAnimalName() %></td>
+                                        <td><%= a.getGender() %> / <%= a.getNeutralization() %></td>
+                                        <td><%= a.getAnimalAge() %></td>
+                                        <td><%= a.getAnimalWeight() %></td>
+                                    </tr>
+                                <% } %>
                             </tbody>
 
                         </table>
+                        <% } %>
                     </div>
 
                 </div>
