@@ -32,4 +32,36 @@ public class MemberService {
 		return result;
 	}
 
+	public int checkId(String inputId) {
+		
+		Connection conn = getConnection();
+		int result = new MemberDao().checkId(conn, inputId);
+		
+		close(conn);
+		
+		return result;
+	}
+
+	public int checkNickname(String inputNickname) {
+		
+		Connection conn = getConnection();
+		int result = new MemberDao().checkNickname(conn, inputNickname);
+		
+		close(conn);
+		
+		return result;
+	}
+
+	public int checkPhone(String inputPhone) {
+		
+		Connection conn = getConnection();
+		int result = new MemberDao().checkPhone(conn, inputPhone);
+		
+		close(conn);
+		
+		return result;
+	}
+	
+	
+	
 }

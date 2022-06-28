@@ -100,6 +100,7 @@
     }
     .test-col-3 {
         width: 30%;
+        font-size: 12px;
     }
     .dummy-row-top {
         width: 100%;
@@ -171,7 +172,7 @@
                             Petmily 사이트를 방문해주셔서 감사합니다.<br>
                             회원가입을 위해서 다음 정보를 입력 부탁드리겠습니다.
                     </div>
-					<form id="enroll-member-form" method="post" action="/SemiProject/insert.me">
+					<form id="enroll-member-form" method="post" onsubmit="return checkAll();" action="/SemiProject/insert.me">
 						<div id="enroll-member-form-wrap">
 
                             <div class="test-row dummy-row-top">
@@ -180,39 +181,46 @@
                                 <div class="test-col-3"></div>
                             </div>
 
+                            <!-- 아이디 -->
                             <div class="test-row">
                                 <div class="test-col-1">
                                     <span>아이디</span>
                                 </div>
                                 <div class="test-col-2">
-                                    <input type="text" name="userId" required>
+                                    <input type="text" name="userId" maxlength="20" onkeyup="checkId();" required>
                                 </div>
                                 <div class="test-col-3">
-                                    아이디 중복 확인
+                                    <span name="checkIdResult"></span>
                                 </div>
                             </div>
+
+                            <!-- 비밀번호 -->
                             <div class="test-row">
                                 <div class="test-col-1">
                                     <span>비밀번호</span>
                                 </div>
                                 <div class="test-col-2">
-                                    <input type="password" name="userPwd" required>
+                                    <input type="password" name="userPwd" maxlength="20" onkeyup="checkPwd();" required>
                                 </div>
                                 <div class="test-col-3">
-                                    삭제
+                                    <span name="checkPwdResult"></span>
                                 </div>
                             </div>
+
+                            <!-- 비밀번호 확인 -->
                             <div class="test-row">
                                 <div class="test-col-1">
                                     <span>비밀번호 확인</span>
                                 </div>
                                 <div class="test-col-2">
-                                    <input type="password" name="pwdChk" required>
+                                    <input type="password" name="matchPwd" maxlength="20" onkeyup="checkMatchPwd();" required>
                                 </div>
                                 <div class="test-col-3">
-                                    비밀번호 체크
+                                    <span name="checkMatchPwdResult"></span>
                                 </div>
                             </div>
+
+                            <!-- 이메일 주소 -->
                             <div class="test-row">
                                 <div class="test-col-1">
                                     <span>이메일 주소</span>
@@ -224,6 +232,8 @@
                                     <button>인증번호 받기</button>
                                 </div>
                             </div>
+
+                            <!-- 이메일 인증번호 -->
                             <div class="test-row">
                                 <div class="test-col-1">
                                     <span>이메일 인증번호</span>
@@ -235,28 +245,34 @@
                                     <button>이메일 인증번호 확인</button>
                                 </div>
                             </div>
+
+                            <!-- 이름 -->
                             <div class="test-row">
                                 <div class="test-col-1">
                                     <span>이름</span>
                                 </div>
                                 <div class="test-col-2">
-                                    <input type="text" name="userName" required>
+                                    <input type="text" name="userName" maxlength="20" onkeyup="checkName();" required>
                                 </div>
                                 <div class="test-col-3">
-                                    삭제
+                                    <span name="checkNameResult"></span>
                                 </div>
                             </div>
+
+                            <!-- 닉네임 -->
                             <div class="test-row">
                                 <div class="test-col-1">
                                     <span>닉네임</span>
                                 </div>
                                 <div class="test-col-2">
-                                    <input type="text" name="userNickname" required>
+                                    <input type="text" name="userNickname" maxlength="20" onkeyup="checkNickname();" required>
                                 </div>
                                 <div class="test-col-3">
-                                    닉네임 중복 확인
+                                    <span name="checkNicknameResult"></span>
                                 </div>
                             </div>
+
+                            <!-- 생년월일 -->
                             <div class="test-row">
                                 <div class="test-col-1">
                                     <span>생년월일</span>
@@ -268,17 +284,21 @@
                                     삭제
                                 </div>
                             </div>
+
+                            <!-- 휴대전화번호 -->
                             <div class="test-row">
                                 <div class="test-col-1">
                                     <span>휴대전화번호</span>
                                 </div>
                                 <div class="test-col-2">
-                                    <input type="text" name="phone" required>
+                                    <input type="text" name="phone" maxlength="20" onkeyup="checkPhone();" required>
                                 </div>
                                 <div class="test-col-3">
-                                    휴대전화번호 중복 확인
+                                    <span name="checkPhoneResult"></span>
                                 </div>
                             </div>
+
+                            <!-- 주소 -->
                             <div class="test-row address-row">
                                 <div class="test-col-1">
                                     <span>주소</span>
@@ -294,6 +314,7 @@
                                 </div>
                             </div>
 
+                            <!-- (임시)권한 -->
                             <div class="test-row">
                                 <div class="test-col-1">
                                     <span>(임시)권한</span>
@@ -305,9 +326,7 @@
                                         <option value="P">일반</option>
                                     </select>
                                 </div>
-                                <div class="test-col-3">
-                                    삭제
-                                </div>
+                                <div class="test-col-3"></div>
                             </div>
 
                             <div class="test-row dummy-row-bottom">
@@ -337,6 +356,280 @@
 		<!-- footer -->
 		<%@ include file="../common/footer.jsp" %>
 		
+        <script>
+
+            var checkIdflag = false;
+            var checkPwdflag = false;
+            var checkMatchPwdflag = false;
+            var checkNameflag = false;
+            var checkNicknameflag = false;
+            var checkPhoneflag = false;
+            
+            function checkId(){
+
+                var $userId = $("#enroll-member-form input[name=userId]").val();
+                var $checkIdResult = $("#enroll-member-form span[name=checkIdResult]");
+                var $regExp = /^[a-z\d_-]{4,20}$/;
+
+                $.ajax({
+                    url : "checkId.me",
+                    data : {inputId : $userId},
+                    success : function(result){
+                        
+                        if (result < 1) {
+                            
+                            $checkIdResult.css('color', 'green');
+                            $checkIdResult.html('사용 가능한 아이디 입니다.');
+
+                            checkIdflag = true;
+                        }
+                        if (result == 1) {
+
+                            $checkIdResult.css('color', 'red');
+                            $checkIdResult.html('중복되는 사용자가 있습니다.');
+
+                            checkIdflag = false;
+                        } 
+                        if (!$regExp.test($userId)) {
+                            
+                            $checkIdResult.css('color', 'red');
+                            $checkIdResult.html('4~20자의 영문 소문자, 숫자, <br>특수기호 _ 와 - 만 사용 가능합니다.');
+
+                            checkIdflag = false;
+                        }
+                        if ($userId == '') {
+
+                            $checkIdResult.html('');
+
+                            checkIdflag = false;
+                        }
+                    },
+                    error : function(){
+
+                        console.log('id check error');
+                    },
+                });
+            }
+
+            function checkPwd() {
+                
+                var $userPwd = $("#enroll-member-form input[name=userPwd]").val();
+                var $checkPwdResult = $("#enroll-member-form span[name=checkPwdResult]");
+                var $regExp = /^[a-zA-Z\d!@#$%^]{8,20}$/;
+
+                if (!$regExp.test($userPwd)) {
+                            
+                    $checkPwdResult.css('color', 'red');
+                    $checkPwdResult.html('8~20자의 영문 소문자, 대문자, 숫자, <br>특수기호 ! @ # $ % ^ 만 <br>사용 가능합니다.');
+
+                    checkPwdflag = false;
+                }
+                else {
+
+                    $checkPwdResult.css('color', 'green');
+                    $checkPwdResult.html('사용 가능한 비밀번호 입니다.');
+
+                    checkPwdflag = true;
+                }
+                if ($userPwd == '') {
+
+                    $checkPwdResult.html('');
+
+                    checkPwdflag = false;
+                }
+            }
+
+            function checkMatchPwd() {
+
+                var $matchPwd = $("#enroll-member-form input[name=matchPwd]").val();
+                var $userPwd = $("#enroll-member-form input[name=userPwd]").val();
+                var $checkMatchPwdResult = $("#enroll-member-form span[name=checkMatchPwdResult]");
+
+                if ($matchPwd == $userPwd) {
+                    
+                    $checkMatchPwdResult.css('color', 'green');
+                    $checkMatchPwdResult.html('비밀번호가 일치합니다.');
+
+                    checkMatchPwdflag = true;
+                }
+                else {
+                    
+                    $checkMatchPwdResult.css('color', 'red');
+                    $checkMatchPwdResult.html('비밀번호가 일치하지 않습니다.');
+
+                    checkMatchPwdflag = false;
+                }
+                if ($matchPwd == '') {
+
+                    $checkMatchPwdResult.html('');
+
+                    checkMatchPwdflag = false;
+                }
+            }
+
+            function checkName() {
+                
+                var $userName = $("#enroll-member-form input[name=userName]").val();
+                var $checkNameResult = $("#enroll-member-form span[name=checkNameResult]");
+                var $regExp = /^[가-힣a-zA-Z]{2,20}$/;
+
+                if (!$regExp.test($userName)) {
+                            
+                    $checkNameResult.css('color', 'red');
+                    $checkNameResult.html('2~20자의 한글, 영문 소문자, 대문자만 사용 가능합니다.');
+
+                    checkNameflag = false;
+                }
+                else {
+
+                    $checkNameResult.html('');
+
+                    checkNameflag = true;
+                }
+                if ($userName == '') {
+
+                    $checkNameResult.html('');
+
+                    checkNameflag = false;
+                }
+            }
+
+            function checkNickname(){
+
+                var $userNickname = $("#enroll-member-form input[name=userNickname]").val();
+                var $checkNicknameResult = $("#enroll-member-form span[name=checkNicknameResult]");
+                var $regExp = /^[가-힣a-z\d_-]{2,20}$/;
+
+                $.ajax({
+                    url : "checkNickname.me",
+                    data : {inputNickname : $userNickname},
+                    success : function(result){
+                        
+                        if (result < 1) {
+                            
+                            $checkNicknameResult.css('color', 'green');
+                            $checkNicknameResult.html('사용 가능한 닉네임 입니다.');
+
+                            checkNicknameflag = true;
+                        }
+                        if (result == 1) {
+
+                            $checkNicknameResult.css('color', 'red');
+                            $checkNicknameResult.html('중복되는 사용자가 있습니다.');
+
+                            checkNicknameflag = false;
+                        } 
+                        if (!$regExp.test($userNickname)) {
+                            
+                            $checkNicknameResult.css('color', 'red');
+                            $checkNicknameResult.html('2~20자의 한글, 영문 소문자, 숫자, <br>특수기호 _ 와 - 만 사용 가능합니다.');
+
+                            checkNicknameflag = false;
+                        }
+                        if ($userNickname == '') {
+
+                            $checkNicknameResult.html('');
+
+                            checkNicknameflag = false;
+                        }
+                    },
+                    error : function(){
+
+                        console.log('nickname check error');
+                    },
+                });
+            }
+
+            function checkPhone(){
+
+                var $phone = $("#enroll-member-form input[name=phone]").val();
+                var $checkPhoneResult = $("#enroll-member-form span[name=checkPhoneResult]");
+                var $regExp = /^[0-9]{2,20}$/;
+
+                $.ajax({
+                    url : "checkPhone.me",
+                    data : {inputPhone : $phone},
+                    success : function(result){
+                        
+                        if (result < 1) {
+                            
+                            $checkPhoneResult.css('color', 'green');
+                            $checkPhoneResult.html('사용 가능한 휴대전화번호 입니다.');
+
+                            checkPhoneflag = true;
+                        }
+                        if (result == 1) {
+
+                            $checkPhoneResult.css('color', 'red');
+                            $checkPhoneResult.html('중복되는 사용자가 있습니다.');
+
+                            checkPhoneflag = false;
+                        } 
+                        if (!$regExp.test($phone)) {
+                            
+                            $checkPhoneResult.css('color', 'red');
+                            $checkPhoneResult.html('숫자만 사용 가능합니다.(수정예정)');
+
+                            checkPhoneflag = false;
+                        }
+                        if ($phone == '') {
+
+                            $checkPhoneResult.html('');
+
+                            checkPhoneflag = false;
+                        }
+                    },
+                    error : function(){
+
+                        console.log('phone check error');
+                    },
+                });
+            }
+
+            function checkAll() {
+
+                if (checkIdflag == false) {
+
+                    alert('아이디를 조건에 맞게 작성해주세요.');
+                    
+                    return false;
+                }
+                if (checkPwdflag == false) {
+
+                    alert('비밀번호를 조건에 맞게 작성해주세요.');
+                    
+                    return false;
+                }
+                if (checkMatchPwdflag == false) {
+
+                    alert('비밀번호가 일치하지 않습니다.');
+                    
+                    return false;
+                }
+                if (checkNameflag == false) {
+
+                    alert('이름을 조건에 맞게 작성해주세요.');
+                    
+                    return false;
+                }
+                if (checkNicknameflag == false) {
+
+                    alert('닉네임을 조건에 맞게 작성해주세요.');
+                    
+                    return false;
+                }
+                if (checkPhoneflag == false) {
+
+                    alert('휴대전화번호를 조건에 맞게 작성해주세요.');
+                    
+                    return false;
+                }
+
+                return true;
+            }
+
+        </script>
+
         <!-- Daum 우편번호 서비스 -->
         <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
         <script>

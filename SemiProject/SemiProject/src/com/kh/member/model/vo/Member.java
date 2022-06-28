@@ -4,18 +4,19 @@ import java.sql.Date;
 
 public class Member {
 	
-	private int userNo; //USER_NO	NUMBER
-	private String userId; //USER_ID	VARCHAR2(30 BYTE)
-	private String userPwd; //USER_PWD	VARCHAR2(100 BYTE)
-	private String userName; //USER_NAME	VARCHAR2(20 BYTE)
-	private String userNickname; //USER_NICKNAME	VARCHAR2(20 BYTE)
-	private Date enrollDate; //ENROLL_DATE	DATE
-	private String birthDate; //BIRTH_DATE	DATE
-	private String email; //EMAIL	VARCHAR2(100 BYTE)
-	private String address; //ADDRESS	VARCHAR2(100 BYTE)
-	private String phone; //PHONE	VARCHAR2(20 BYTE)
-	private String status; //STATUS	VARCHAR2(1 BYTE)
-	private String userClass; //CLASS	VARCHAR2(1 BYTE)
+	private int userNo; // USER_NO NUMBER
+	private String userId; // USER_ID VARCHAR2(30 BYTE)
+	private String userPwd; // USER_PWD VARCHAR2(100 BYTE)
+	private String userName; // USER_NAME VARCHAR2(20 BYTE)
+	private String userNickname; // USER_NICKNAME VARCHAR2(20 BYTE)
+	private Date enrollDate; // ENROLL_DATE DATE
+	// (임시) birthDate 필드 String으로 변경함
+	private String birthDate; // BIRTH_DATE DATE
+	private String email; // EMAIL VARCHAR2(100 BYTE)
+	private String address; // ADDRESS VARCHAR2(100 BYTE)
+	private String phone; // PHONE VARCHAR2(20 BYTE)
+	private String status; // STATUS VARCHAR2(1 BYTE)
+	private String userClass; // CLASS VARCHAR2(1 BYTE)
 	
 	public Member() {
 		super();
@@ -32,7 +33,7 @@ public class Member {
 		this.address = address;
 		this.phone = phone;
 	}
-	// 임시로 userClass 사용, 나중에 지울 예정
+	// (임시) userClass 사용, 나중에 지울 예정
 	public Member(String userId, String userPwd, String userName, String userNickname, String birthDate, String email,
 			String address, String phone, String userClass) {
 		super();

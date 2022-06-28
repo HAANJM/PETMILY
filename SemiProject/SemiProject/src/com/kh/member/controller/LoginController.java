@@ -31,22 +31,27 @@ public class LoginController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		// POST > UTF-8로 인코딩
 		request.setCharacterEncoding("UTF-8");
 		
+		// 입력 값 가져오기
 		String userId = request.getParameter("userId");
 		String userPwd = request.getParameter("userPwd");
 		
+		// 입력 값 전달, 처리 값 Member loginUser 받기
 		Member loginUser = new MemberService().loginMember(userId, userPwd);
 		
 		HttpSession session = request.getSession();
 		
-		if(loginUser == null) {
+		if(loginUser == null) { // 로그인 실패
 			
+			// 실패 메시지 얼럿 띄우고 다시 로그인 페이지로 이동
 			session.setAttribute("alertMsg", "회원 정보가 일치하지 않습니다.");
 			
 			response.sendRedirect(request.getContextPath() + "/loginForm.me");
-		} else {
+		} else { // 로그인 성공
 			
+			// 성공 메시지 얼럿 띄우고 메인 페이지로 이동, 로그인 정보(loginUser) 전달
 			session.setAttribute("alertMsg", "펫밀리 방문을 환영합니다.");
 			session.setAttribute("loginUser", loginUser);
 			

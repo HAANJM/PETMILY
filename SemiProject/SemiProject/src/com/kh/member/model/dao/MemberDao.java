@@ -94,7 +94,90 @@ public class MemberDao {
 			close(pstmt);
 		}
 		
-		System.out.println(result);
+		return result;
+	}
+
+	public int checkId(Connection conn, String inputId) {
+		
+		int result = 0;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String sql = prop.getProperty("checkId");
+		
+		try {
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, inputId);
+			
+			rset = pstmt.executeQuery();
+			
+			if (rset.next()) {
+				
+				result++;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+	public int checkNickname(Connection conn, String inputNickname) {
+		
+		int result = 0;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String sql = prop.getProperty("checkNickname");
+		
+		try {
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, inputNickname);
+			
+			rset = pstmt.executeQuery();
+			
+			if (rset.next()) {
+				
+				result++;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+	public int checkPhone(Connection conn, String inputPhone) {
+
+		int result = 0;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String sql = prop.getProperty("checkPhone");
+		
+		try {
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, inputPhone);
+			
+			rset = pstmt.executeQuery();
+			
+			if (rset.next()) {
+				
+				result++;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		
 		return result;
 	}
 	

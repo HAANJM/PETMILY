@@ -7,17 +7,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.kh.member.model.service.MemberService;
+
 /**
- * Servlet implementation class LogoutMemberController
+ * Servlet implementation class AjaxIdCheckController
  */
-@WebServlet("/logout.me")
-public class LogoutMemberController extends HttpServlet {
+@WebServlet("/checkPhone.me")
+public class AjaxCheckPhoneController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public LogoutMemberController() {
+    public AjaxCheckPhoneController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -27,11 +29,13 @@ public class LogoutMemberController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		// session 무효화
-		request.getSession().invalidate();
+		String inputPhone = request.getParameter("inputPhone");
 		
-		// 메인 페이지로 이동
-		response.sendRedirect(request.getContextPath());
+		int result = new MemberService().checkPhone(inputPhone);
+		
+		response.setContentType("text/html; charset=UTF-8");
+		
+		response.getWriter().print(result);
 	}
 
 	/**
