@@ -456,6 +456,7 @@
 					</form>
 				</div>
 
+                <!-- 돌아가기, 회원가입 버튼 -->
                 <div id="enroll-member-box-tail">
                     <div id="enroll-member-box-tail-button-wrap">
                         <div id="previous-button">
@@ -883,6 +884,7 @@
                 if (checkYearFlag == false) {
 
                     alert('생년월일을 다시 확인해주세요.');
+                    enrollForm.year.value = '';
                     enrollForm.year.focus();
 
                     return false;
