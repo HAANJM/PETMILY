@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>PETMILY - 회원 정보 찾기</title>
+<title>PETMILY - 회원정보 찾기</title>
 <style>
 
     /* 전체 페이지 크기 */
@@ -28,6 +28,7 @@
 		<!-- header -->
 		<%@ include file="../common/header.jsp" %>
 		
+		<!-- content -->
         <div id="find-member-page-area">
 
             <h1>아이디 / 비밀번호 찾기 페이지</h1>

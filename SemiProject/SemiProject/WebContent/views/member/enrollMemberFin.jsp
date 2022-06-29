@@ -5,7 +5,6 @@
 <head>
 <meta charset="UTF-8">
 <title>PETMILY - 회원가입</title>
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
 <style>
 
 	/* 전체 페이지 크기 */
@@ -93,6 +92,7 @@
 		<!-- header -->
 		<%@ include file="../common/header.jsp" %>
 		
+		<!-- content -->
 		<div id="enroll-member-page-area">
 			<div id="enroll-member-box-area">
 

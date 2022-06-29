@@ -94,6 +94,7 @@
 	
 	<script>
 	
+		// 얼럿 띄우기(공용)
 		var msg = "<%= alertMsg %>";
 		
 		if (msg != "null") {
@@ -107,12 +108,14 @@
 	<!-- header -->
 	<div id="header">
 
+		<!-- 로고 -->
 		<div id="logo-area">
 			<div id="logo">
 				<a href="<%= contextPath %>">PETMILY</a>
 			</div>
 		</div>
 
+		<!-- 메인메뉴 -->
 		<div id="menubar-area">
 			<div id="menubar">
 				<a href="">입양하기</a>
@@ -122,15 +125,21 @@
 			</div>
 		</div>
 		
+		<!-- 로그인 상태에 보여지는 login-area -->
 		<% if(loginUser != null) { %>
 		
 			<div id="login-area">
 
+				<!-- 로그인 정보 표시(프로필 사진, 회원등급, 닉네임) -->
 				<div id="login-info">
+
+					<!-- 프로필 사진 -->
 					<div id="profile">
 						<img src="<%= contextPath %>/resources/blank-profile-picture.png" height="70%">
 					</div>
+
 					<div id="user-nickname">
+						<!-- 회원등급 -->
 						<% 
 							String userClass = "";
 						
@@ -143,10 +152,12 @@
 						%>
 						[<%= userClass %>]
 						&nbsp;
+						<!-- 닉네임 -->
 						<%= loginUser.getUserNickname() %>
 					</div>
 				</div>
 
+				<!-- 로그인 시 보여지는 login-menu -->
 				<div id="login-menu">
 					<a href="<%= contextPath %>">HOME</a>
 					&nbsp;&nbsp;&vert;&nbsp;&nbsp;
@@ -157,15 +168,18 @@
 
 			</div>
 			
+		<!-- 비회원 상태에 보여지는 login-area -->
 		<% } else { %>
 		
 			<div id="login-area">
 
+				<!-- 로그인 정보 표시(비회원이라 내용 없음) -->
 				<div id="login-info">
 					<div id="profile-picture"></div>
 					<div id="user-nickname"></div>
 				</div>
 
+				<!-- 비회원 시 보여지는 login-menu -->
 				<div id="login-menu">
 					<a href="<%= contextPath %>">HOME</a>
 					&nbsp;&nbsp;&vert;&nbsp;&nbsp;

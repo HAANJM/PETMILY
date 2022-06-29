@@ -41,16 +41,25 @@ public class MemberInsertController extends HttpServlet {
 		String email = request.getParameter("email");
 		String userName = request.getParameter("userName");
 		String userNickname = request.getParameter("userNickname");
-		String birthDate = request.getParameter("birthDate");
-		String phone = request.getParameter("phone");
 		String userClass = request.getParameter("userClass");
 		
+		// 생년월일 가공
+		String year = request.getParameter("year");
+		String month = request.getParameter("month");
+		String date = request.getParameter("date");
+		String birthDate = year + "/" + month + "/" + date;
+		
+		// 휴대전화번호 가공
+		String phoneF = request.getParameter("phoneF");
+		String phoneM = request.getParameter("phoneM");
+		String phoneB = request.getParameter("phoneB");
+		String phone = phoneF + "-" + phoneM + "-" + phoneB;
 		// 주소 가공
 		String postcode = request.getParameter("postcode");
 		String addressMain = request.getParameter("addressMain");
 		String addressDetail = request.getParameter("addressDetail");
 		String addressAdd = request.getParameter("addressAdd");
-		String address = "(" + postcode + ") " + addressMain + " " + addressDetail + " " + addressAdd;
+		String address = "(" + postcode + ") " + addressMain + " " + addressDetail + addressAdd;
 		
 		// 입력 값 Member m에 담기
 		Member m = new Member(userId, userPwd, userName, userNickname, birthDate, email, address, phone, userClass);

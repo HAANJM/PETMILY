@@ -5,7 +5,6 @@
 <head>
 <meta charset="UTF-8">
 <title>PETMILY - 회원가입</title>
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
 <style>
 
 	/* 전체 페이지 크기 */
@@ -70,17 +69,20 @@
         box-sizing: border-box;
     }
 
-    .test-row {
+    /* enroll-row 스타일 */
+    .enroll-row {
         width: 100%;
         height: 70px;
         display: flex;
     }
-    .test-row > div {
+    .enroll-row > div {
         float: left;
         box-sizing: border-box;
         margin: auto;
     }
-    .test-col-1 {
+
+    /* enroll-col-1 스타일 */
+    .enroll-col-1 {
         font-size: 18px;
         font-weight: bold;
         width: 25%;
@@ -89,34 +91,116 @@
         padding-top: 18px;
         background-color: rgb(243, 243, 243);
     }
-    .test-col-2 {
+
+    /* enroll-col-2 스타일 */
+    .enroll-col-2 {
         width: 45%;
         padding-left: 20px;
     }
-    .test-col-2 > input {
+    .enroll-col-2 input {
         width: 292px;
         height: 34px;
         border-radius: 5px;
+        border: none;
+        border: 1px solid rgb(125, 125, 125);
     }
-    .test-col-3 {
+
+    /* enroll-col-2-type-1 스타일 - 생년월일, 휴대전화번호 부분에서 사용 */
+    .enroll-col-2-type-1 {
+        width: 50%;
+        padding-left: 20px;
+    }
+    .enroll-col-2-type-1 > input {
+        width: 80px;
+        height: 34px;
+        border-radius: 5px;
+        border: none;
+        border: 1px solid rgb(125, 125, 125);
+        text-align: center;
+    }
+    .enroll-col-2-type-1 > select {
+        width: 86px;
+        height: 38px;
+        border-radius: 5px;
+        border: none;
+        border: 1px solid rgb(125, 125, 125);
+        text-align: center;
+    }
+
+    /* enroll-col-2-type-2  - 휴대전화번호 부분에서 사용 */
+    .enroll-col-2-type-2 {
+        width: 48%;
+        padding-left: 20px;
+    }
+
+    /* 주소 부분 스타일 */
+    .address-row {
+        width: 100%;
+        height: 190px;
+        margin: auto;
+    }
+    .enroll-col-2-type-3 {
+        width: 75%;
+        padding-left: 20px;
+    }
+    .enroll-col-2-type-3 > input {
+        width: 250px;
+        height: 34px;
+        border-radius: 5px;
+        border: none;
+        border: 1px solid rgb(125, 125, 125);
+    }
+
+    /* enroll-col-3 */
+    .enroll-col-3 {
         width: 30%;
         font-size: 12px;
     }
+    .enroll-col-3-type-1 {
+        width: 25%;
+        font-size: 12px;
+    }
+    .enroll-col-3-type-2 {
+        width: 27%;
+        font-size: 12px;
+        text-align: center;
+    }
+
+    /* dummy-row top, bottm */
     .dummy-row-top {
         width: 100%;
         height: 20px;
         display: flex;
     }
-    .address-row {
-        width: 100%;
-        height: 300px;
-        display: flex;
-    }
     .dummy-row-bottom {
         width: 100%;
-        height: 265px;
+        height: 79px;
         display: flex;
     }
+
+    /* input, select 선택 시 테두리 변경 */
+    #enroll-member-form-wrap input:focus, select:focus {
+        border-color: rgb(232, 191, 123);
+        outline: none;
+    }
+
+    /* input type number 숫자 증감 버튼 삭제 */
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    #enroll-member-form-wrap button {
+		height: 38px;
+		color: white;
+		background-color: rgb(232, 191, 123);
+		font-size: 12px;
+		font-weight: bold;
+		border: 1px solid rgb(155, 128, 82);
+		border-radius: 5px;
+		cursor: pointer;
+	}
 
 	/* enroll-member-box-tail */
     #enroll-member-box-tail {
@@ -160,6 +244,7 @@
 		<!-- header -->
 		<%@ include file="../common/header.jsp" %>
 		
+        <!-- content -->
 		<div id="enroll-member-page-area">
 			<div id="enroll-member-box-area">
 
@@ -175,164 +260,196 @@
 					<form id="enroll-member-form" method="post" onsubmit="return checkAll();" action="/SemiProject/insert.me">
 						<div id="enroll-member-form-wrap">
 
-                            <div class="test-row dummy-row-top">
-                                <div class="test-col-1"></div>
-                                <div class="test-col-2"></div>
-                                <div class="test-col-3"></div>
+                            <div class="enroll-row dummy-row-top">
+                                <div class="enroll-col-1"></div>
+                                <div class="enroll-col-2"></div>
+                                <div class="enroll-col-3"></div>
                             </div>
 
                             <!-- 아이디 -->
-                            <div class="test-row">
-                                <div class="test-col-1">
+                            <div class="enroll-row">
+                                <div class="enroll-col-1">
                                     <span>아이디</span>
                                 </div>
-                                <div class="test-col-2">
+                                <div class="enroll-col-2">
                                     <input type="text" name="userId" maxlength="20" onkeyup="checkId();" required>
                                 </div>
-                                <div class="test-col-3">
+                                <div class="enroll-col-3">
                                     <span name="checkIdResult"></span>
                                 </div>
                             </div>
 
                             <!-- 비밀번호 -->
-                            <div class="test-row">
-                                <div class="test-col-1">
+                            <div class="enroll-row">
+                                <div class="enroll-col-1">
                                     <span>비밀번호</span>
                                 </div>
-                                <div class="test-col-2">
+                                <div class="enroll-col-2">
                                     <input type="password" name="userPwd" maxlength="20" onkeyup="checkPwd();" required>
                                 </div>
-                                <div class="test-col-3">
+                                <div class="enroll-col-3">
                                     <span name="checkPwdResult"></span>
                                 </div>
                             </div>
 
                             <!-- 비밀번호 확인 -->
-                            <div class="test-row">
-                                <div class="test-col-1">
+                            <div class="enroll-row">
+                                <div class="enroll-col-1">
                                     <span>비밀번호 확인</span>
                                 </div>
-                                <div class="test-col-2">
+                                <div class="enroll-col-2">
                                     <input type="password" name="matchPwd" maxlength="20" onkeyup="checkMatchPwd();" required>
                                 </div>
-                                <div class="test-col-3">
+                                <div class="enroll-col-3">
                                     <span name="checkMatchPwdResult"></span>
                                 </div>
                             </div>
 
                             <!-- 이메일 주소 -->
-                            <div class="test-row">
-                                <div class="test-col-1">
+                            <div class="enroll-row">
+                                <div class="enroll-col-1">
                                     <span>이메일 주소</span>
                                 </div>
-                                <div class="test-col-2">
+                                <div class="enroll-col-2">
                                     <input type="text" name="email" required>
                                 </div>
-                                <div class="test-col-3">
+                                <div class="enroll-col-3">
                                     <button>인증번호 받기</button>
                                 </div>
                             </div>
 
                             <!-- 이메일 인증번호 -->
-                            <div class="test-row">
-                                <div class="test-col-1">
+                            <div class="enroll-row">
+                                <div class="enroll-col-1">
                                     <span>이메일 인증번호</span>
                                 </div>
-                                <div class="test-col-2">
+                                <div class="enroll-col-2">
                                     <input type="text" name="emailChk" required>
+                                    <!-- &#64;
+                                    <select name="" id="">
+                                        <option value=""><input type="text"></option>
+                                        <option value="">gmail.com</option>
+                                        <option value="">naver.com</option>
+                                        <option value="">hanmail.net</option>
+                                    </select> -->
                                 </div>
-                                <div class="test-col-3">
+                                <div class="enroll-col-3">
                                     <button>이메일 인증번호 확인</button>
                                 </div>
                             </div>
 
                             <!-- 이름 -->
-                            <div class="test-row">
-                                <div class="test-col-1">
+                            <div class="enroll-row">
+                                <div class="enroll-col-1">
                                     <span>이름</span>
                                 </div>
-                                <div class="test-col-2">
+                                <div class="enroll-col-2">
                                     <input type="text" name="userName" maxlength="20" onkeyup="checkName();" required>
                                 </div>
-                                <div class="test-col-3">
+                                <div class="enroll-col-3">
                                     <span name="checkNameResult"></span>
                                 </div>
                             </div>
 
                             <!-- 닉네임 -->
-                            <div class="test-row">
-                                <div class="test-col-1">
+                            <div class="enroll-row">
+                                <div class="enroll-col-1">
                                     <span>닉네임</span>
                                 </div>
-                                <div class="test-col-2">
+                                <div class="enroll-col-2">
                                     <input type="text" name="userNickname" maxlength="20" onkeyup="checkNickname();" required>
                                 </div>
-                                <div class="test-col-3">
+                                <div class="enroll-col-3">
                                     <span name="checkNicknameResult"></span>
                                 </div>
                             </div>
 
                             <!-- 생년월일 -->
-                            <div class="test-row">
-                                <div class="test-col-1">
+                            <div class="enroll-row">
+                                <div class="enroll-col-1">
                                     <span>생년월일</span>
                                 </div>
-                                <div class="test-col-2">
-                                    <input type="date" name="birthDate" required>
+                                <div class="enroll-col-2-type-1">
+                                    <input type="number" name="year" maxlength="4" oninput="inputNumberMaxLength(this);" onkeyup="checkYear();" required>&nbsp;년&nbsp;
+                                    <select name="month" required>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                        <option value="11">11</option>
+                                        <option value="12">12</option>
+                                    </select>&nbsp;월&nbsp;
+                                    <input type="number" name="date" maxlength="2" oninput="inputNumberMaxLength(this);" onkeyup="checkDate();" required>&nbsp;일
                                 </div>
-                                <div class="test-col-3">
-                                    삭제
-                                </div>
+                                <div class="enroll-col-3-type-1"></div>
                             </div>
 
                             <!-- 휴대전화번호 -->
-                            <div class="test-row">
-                                <div class="test-col-1">
+                            <div class="enroll-row">
+                                <div class="enroll-col-1">
                                     <span>휴대전화번호</span>
                                 </div>
-                                <div class="test-col-2">
-                                    <input type="text" name="phone" maxlength="20" onkeyup="checkPhone();" required>
+                                <div class="enroll-col-2-type-1 enroll-col-2-type-2">
+                                    <select name="phoneF" required>
+                                        <option value="010">010</option>
+                                        <option value="011">011</option>
+                                        <option value="017">017</option>
+                                        <option value="016">016</option>
+                                        <option value="019">019</option>
+                                    </select>
+                                    &nbsp;
+                                    &#45;
+                                    &nbsp;
+                                    <input type="number" name="phoneM" maxlength="4" oninput="inputNumberMaxLength(this);" onkeyup="checkPhone();" required>
+                                    &nbsp;
+                                    &#45;
+                                    &nbsp;
+                                    <input type="number" name="phoneB" maxlength="4" oninput="inputNumberMaxLength(this);" onkeyup="checkPhone();" required>
                                 </div>
-                                <div class="test-col-3">
+                                <div class="enroll-col-3-type-1 enroll-col-3-type-2">
                                     <span name="checkPhoneResult"></span>
                                 </div>
                             </div>
 
                             <!-- 주소 -->
-                            <div class="test-row address-row">
-                                <div class="test-col-1">
+                            <div class="enroll-row address-row">
+                                <div class="enroll-col-1">
                                     <span>주소</span>
                                 </div>
-                                <div class="test-col-2">
-                                    <input type="text" id="sample6_postcode" name="postcode" placeholder="우편번호">
-                                    <input type="text" id="sample6_address" name="addressMain" placeholder="주소"><br>
-                                    <input type="text" id="sample6_detailAddress" name="addressDetail" placeholder="상세주소">
-                                    <input type="text" id="sample6_extraAddress" name="addressAdd" placeholder="참고항목">
-                                </div>
-                                <div class="test-col-3">
-                                    <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
+                                <div class="enroll-col-2-type-3">
+                                    <input type="text" id="sample6_postcode" name="postcode" placeholder="우편번호" readonly required>
+                                    &nbsp;<button onclick="sample6_execDaumPostcode();">우편번호 찾기</button><br><br>
+                                    <input type="text" id="sample6_address" name="addressMain" placeholder="주소" readonly required><br><br>
+                                    <input type="text" id="sample6_detailAddress" name="addressDetail" placeholder="상세주소" required>
+                                    <input type="text" id="sample6_extraAddress" name="addressAdd" placeholder="참고항목" readonly>
                                 </div>
                             </div>
 
-                            <!-- (임시)권한 -->
-                            <div class="test-row">
-                                <div class="test-col-1">
-                                    <span>(임시)권한</span>
+                            <!-- 회원등급(임시) -->
+                            <div class="enroll-row">
+                                <div class="enroll-col-1">
+                                    <span>회원등급(임시)</span>
                                 </div>
-                                <div class="test-col-2">
+                                <div class="enroll-col-2">
                                     <select name="userClass">
                                         <option value="A">관리자</option>
                                         <option value="G">단체</option>
                                         <option value="P">일반</option>
                                     </select>
                                 </div>
-                                <div class="test-col-3"></div>
+                                <div class="enroll-col-3"></div>
                             </div>
 
-                            <div class="test-row dummy-row-bottom">
-                                <div class="test-col-1"></div>
-                                <div class="test-col-2"></div>
-                                <div class="test-col-3"></div>
+                            <div class="enroll-row dummy-row-bottom">
+                                <div class="enroll-col-1"></div>
+                                <div class="enroll-col-2"></div>
+                                <div class="enroll-col-3"></div>
                             </div>
 
 						</div>
@@ -358,13 +475,17 @@
 		
         <script>
 
-            var checkIdflag = false;
-            var checkPwdflag = false;
-            var checkMatchPwdflag = false;
-            var checkNameflag = false;
-            var checkNicknameflag = false;
-            var checkPhoneflag = false;
+            // 각각 조건들 확인용 flag
+            var checkIdFlag = false;
+            var checkPwdFlag = false;
+            var checkMatchPwdFlag = false;
+            var checkNameFlag = false;
+            var checkNicknameFlag = false;
+            var checkYearFlag = false;
+            var checkDateFlag = false;
+            var checkPhoneFlag = false;
             
+            // 아이디 조건 확인, 결과 출력
             function checkId(){
 
                 var $userId = $("#enroll-member-form input[name=userId]").val();
@@ -381,27 +502,27 @@
                             $checkIdResult.css('color', 'green');
                             $checkIdResult.html('사용 가능한 아이디 입니다.');
 
-                            checkIdflag = true;
+                            checkIdFlag = true;
                         }
                         if (result == 1) {
 
                             $checkIdResult.css('color', 'red');
                             $checkIdResult.html('중복되는 사용자가 있습니다.');
 
-                            checkIdflag = false;
+                            checkIdFlag = false;
                         } 
                         if (!$regExp.test($userId)) {
                             
                             $checkIdResult.css('color', 'red');
                             $checkIdResult.html('4~20자의 영문 소문자, 숫자, <br>특수기호 _ 와 - 만 사용 가능합니다.');
 
-                            checkIdflag = false;
+                            checkIdFlag = false;
                         }
                         if ($userId == '') {
 
                             $checkIdResult.html('');
 
-                            checkIdflag = false;
+                            checkIdFlag = false;
                         }
                     },
                     error : function(){
@@ -411,6 +532,7 @@
                 });
             }
 
+            // 비밀번호 조건 확인, 결과 출력
             function checkPwd() {
                 
                 var $userPwd = $("#enroll-member-form input[name=userPwd]").val();
@@ -422,23 +544,24 @@
                     $checkPwdResult.css('color', 'red');
                     $checkPwdResult.html('8~20자의 영문 소문자, 대문자, 숫자, <br>특수기호 ! @ # $ % ^ 만 <br>사용 가능합니다.');
 
-                    checkPwdflag = false;
+                    checkPwdFlag = false;
                 }
                 else {
 
                     $checkPwdResult.css('color', 'green');
                     $checkPwdResult.html('사용 가능한 비밀번호 입니다.');
 
-                    checkPwdflag = true;
+                    checkPwdFlag = true;
                 }
                 if ($userPwd == '') {
 
                     $checkPwdResult.html('');
 
-                    checkPwdflag = false;
+                    checkPwdFlag = false;
                 }
             }
 
+            // 비밀번호 확인 조건 확인, 결과 출력
             function checkMatchPwd() {
 
                 var $matchPwd = $("#enroll-member-form input[name=matchPwd]").val();
@@ -450,23 +573,24 @@
                     $checkMatchPwdResult.css('color', 'green');
                     $checkMatchPwdResult.html('비밀번호가 일치합니다.');
 
-                    checkMatchPwdflag = true;
+                    checkMatchPwdFlag = true;
                 }
                 else {
                     
                     $checkMatchPwdResult.css('color', 'red');
                     $checkMatchPwdResult.html('비밀번호가 일치하지 않습니다.');
 
-                    checkMatchPwdflag = false;
+                    checkMatchPwdFlag = false;
                 }
                 if ($matchPwd == '') {
 
                     $checkMatchPwdResult.html('');
 
-                    checkMatchPwdflag = false;
+                    checkMatchPwdFlag = false;
                 }
             }
 
+            // 이름 조건 확인, 결과 출력
             function checkName() {
                 
                 var $userName = $("#enroll-member-form input[name=userName]").val();
@@ -478,22 +602,23 @@
                     $checkNameResult.css('color', 'red');
                     $checkNameResult.html('2~20자의 한글, 영문 소문자, 대문자만 사용 가능합니다.');
 
-                    checkNameflag = false;
+                    checkNameFlag = false;
                 }
                 else {
 
                     $checkNameResult.html('');
 
-                    checkNameflag = true;
+                    checkNameFlag = true;
                 }
                 if ($userName == '') {
 
                     $checkNameResult.html('');
 
-                    checkNameflag = false;
+                    checkNameFlag = false;
                 }
             }
 
+            // 닉네임 조건 확인, 결과 출력
             function checkNickname(){
 
                 var $userNickname = $("#enroll-member-form input[name=userNickname]").val();
@@ -510,27 +635,27 @@
                             $checkNicknameResult.css('color', 'green');
                             $checkNicknameResult.html('사용 가능한 닉네임 입니다.');
 
-                            checkNicknameflag = true;
+                            checkNicknameFlag = true;
                         }
                         if (result == 1) {
 
                             $checkNicknameResult.css('color', 'red');
                             $checkNicknameResult.html('중복되는 사용자가 있습니다.');
 
-                            checkNicknameflag = false;
+                            checkNicknameFlag = false;
                         } 
                         if (!$regExp.test($userNickname)) {
                             
                             $checkNicknameResult.css('color', 'red');
                             $checkNicknameResult.html('2~20자의 한글, 영문 소문자, 숫자, <br>특수기호 _ 와 - 만 사용 가능합니다.');
 
-                            checkNicknameflag = false;
+                            checkNicknameFlag = false;
                         }
                         if ($userNickname == '') {
 
                             $checkNicknameResult.html('');
 
-                            checkNicknameflag = false;
+                            checkNicknameFlag = false;
                         }
                     },
                     error : function(){
@@ -540,11 +665,131 @@
                 });
             }
 
+            // 생년월일 조건 확인, 결과 출력
+            // 년
+            function checkYear() {
+                
+                var $year = $("#enroll-member-form input[name=year]").val();
+                var $regExp = /^(1[9]|2[0])\d\d$/;
+
+                if (!$regExp.test($year) || $year > 2022) {
+                            
+                    checkYearFlag = false;
+                }
+                else {
+
+                    checkYearFlag = true;
+                }
+                if ($year == '') {
+
+                    checkYearFlag = false;
+                }
+            }
+            // 월
+            function checkDate() {
+                
+                var $date = $("#enroll-member-form input[name=date]").val();
+                var $month = $("#enroll-member-form select[name=month]").val();
+                var $year = $("#enroll-member-form input[name=year]").val();
+                var $regExp = /^[0-9]{1,2}$/;
+                
+                if (!$regExp.test($date)) {
+
+                    checkDateFlag = false;
+                }
+                else {
+
+                    if ($month == 1 || $month == 3 || $month == 5 || $month == 7 || $month == 8 || $month == 10 || $month == 12) {
+                        
+                        if ($date > 31) {
+
+                            checkDateFlag = false;
+                        }
+                        else {
+
+                            checkDateFlag = true;
+                        }
+                    }
+                    if ($month == 4 || $month == 6 || $month == 9 || $month == 11) {
+                        
+                        if ($date > 30) {
+    
+                            checkDateFlag = false;
+                        }
+                        else {
+
+                            checkDateFlag = true;
+                        }
+                    }
+                    // 2월 윤년 체크
+                    if ($month == 2) {
+                        
+                        // 입력한 년도가 4로 나눠질 때 - 윤년
+                        if ($year % 4 == 0) {
+
+                            // 입력한 년도가 4로 나눠지고 100으로도 나눠질 때 - 윤년 아님
+                            if ($year % 100 == 0) {
+
+                                // 입력한 년도가 4, 100으로 나눠지고 400으로도 나눠질 때 - 윤년
+                                if ($year % 400 == 0) {
+
+                                    if ($date > 29) {
+    
+                                        checkDateFlag = false;
+                                    }
+                                    else {
+
+                                        checkDateFlag = true;
+                                    }
+                                } else {
+                                    
+                                    if ($date > 28) {
+    
+                                        checkDateFlag = false;
+                                    }
+                                    else {
+
+                                        checkDateFlag = true;
+                                    }
+                                }
+                            }
+                            else {
+                                
+                                if ($date > 29) {
+                                    
+                                    checkDateFlag = false;
+                                }
+                                else {
+
+                                    checkDateFlag = true;
+                                }
+                            }
+                        }
+                        else {
+
+                            if ($date > 28) {
+    
+                                checkDateFlag = false;
+                            }
+                            else {
+
+                                checkDateFlag = true;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // 휴대전화번호 조건 확인, 결과 출력
+
             function checkPhone(){
 
-                var $phone = $("#enroll-member-form input[name=phone]").val();
+                var $phoneF = $("#enroll-member-form select[name=phoneF]").val();
+                var $phoneM = $("#enroll-member-form input[name=phoneM]").val();
+                var $phoneB = $("#enroll-member-form input[name=phoneB]").val();
+                var $phone = $phoneF + "-" + $phoneM + "-" + $phoneB;
                 var $checkPhoneResult = $("#enroll-member-form span[name=checkPhoneResult]");
-                var $regExp = /^[0-9]{2,20}$/;
+                var $regExp = /^[0-9]{4}$/;
 
                 $.ajax({
                     url : "checkPhone.me",
@@ -556,27 +801,27 @@
                             $checkPhoneResult.css('color', 'green');
                             $checkPhoneResult.html('사용 가능한 휴대전화번호 입니다.');
 
-                            checkPhoneflag = true;
+                            checkPhoneFlag = true;
                         }
                         if (result == 1) {
 
                             $checkPhoneResult.css('color', 'red');
                             $checkPhoneResult.html('중복되는 사용자가 있습니다.');
 
-                            checkPhoneflag = false;
-                        } 
-                        if (!$regExp.test($phone)) {
+                            checkPhoneFlag = false;
+                        }
+                        if (!$regExp.test($phoneM) || !$regExp.test($phoneB)) {
                             
                             $checkPhoneResult.css('color', 'red');
-                            $checkPhoneResult.html('숫자만 사용 가능합니다.(수정예정)');
+                            $checkPhoneResult.html('휴대전화번호를 전부 입력해주세요.');
 
-                            checkPhoneflag = false;
+                            checkPhoneFlag = false;
                         }
-                        if ($phone == '') {
+                        if ($phoneM == '' || $phoneB == '') {
 
                             $checkPhoneResult.html('');
 
-                            checkPhoneflag = false;
+                            checkPhoneFlag = false;
                         }
                     },
                     error : function(){
@@ -586,41 +831,74 @@
                 });
             }
 
+            // input number type 글자수 제한 기능
+            function inputNumberMaxLength(object) {
+                
+                if (object.value.length > object.maxLength) {
+                    
+                    object.value = object.value.slice(0, object.maxLength)
+                }
+            }
+
+            // 각각의 조건들 조건에 안맞을 시 회원가입 버튼 누르면 얼럿으로 안내, 해당 input으로 이동
             function checkAll() {
 
-                if (checkIdflag == false) {
+                var enrollForm = document.getElementById('enroll-member-form');
+
+                if (checkIdFlag == false) {
 
                     alert('아이디를 조건에 맞게 작성해주세요.');
-                    
+                    enrollForm.userId.focus();
+
                     return false;
                 }
-                if (checkPwdflag == false) {
+                if (checkPwdFlag == false) {
 
                     alert('비밀번호를 조건에 맞게 작성해주세요.');
-                    
-                    return false;
-                }
-                if (checkMatchPwdflag == false) {
+                    enrollForm.userPwd.focus();
 
+                    return false;
+                }
+                if (checkMatchPwdFlag == false) {
+                    
                     alert('비밀번호가 일치하지 않습니다.');
+                    enrollForm.matchPwd.focus();
                     
                     return false;
                 }
-                if (checkNameflag == false) {
+                if (checkNameFlag == false) {
 
                     alert('이름을 조건에 맞게 작성해주세요.');
+                    enrollForm.userName.focus();
                     
                     return false;
                 }
-                if (checkNicknameflag == false) {
+                if (checkNicknameFlag == false) {
 
                     alert('닉네임을 조건에 맞게 작성해주세요.');
+                    enrollForm.userNickname.focus();
                     
                     return false;
                 }
-                if (checkPhoneflag == false) {
+                if (checkYearFlag == false) {
+
+                    alert('생년월일을 다시 확인해주세요.');
+                    enrollForm.year.focus();
+
+                    return false;
+                }
+                if (checkDateFlag == false) {
+
+                    alert('생년월일을 다시 확인해주세요.');
+                    enrollForm.date.value = '';
+                    enrollForm.date.focus();
+
+                    return false;
+                }
+                if (checkPhoneFlag == false) {
 
                     alert('휴대전화번호를 조건에 맞게 작성해주세요.');
+                    enrollForm.phone.focus();
                     
                     return false;
                 }
@@ -633,6 +911,7 @@
         <!-- Daum 우편번호 서비스 -->
         <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
         <script>
+
             function sample6_execDaumPostcode() {
                 new daum.Postcode({
                     oncomplete: function(data) {
@@ -680,6 +959,7 @@
                     }
                 }).open();
             }
+
         </script>
 
 	</div>

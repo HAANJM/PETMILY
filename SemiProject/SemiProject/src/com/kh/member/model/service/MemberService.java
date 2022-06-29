@@ -51,7 +51,7 @@ public class MemberService {
 		
 		return result;
 	}
-
+	
 	public int checkPhone(String inputPhone) {
 		
 		Connection conn = getConnection();
@@ -61,7 +61,5 @@ public class MemberService {
 		
 		return result;
 	}
-	
-	
 	
 }

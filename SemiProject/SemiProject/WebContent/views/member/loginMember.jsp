@@ -147,6 +147,7 @@
 		<!-- header -->
 		<%@ include file="../common/header.jsp" %>
 		
+		<!-- content -->
 		<div id="login-page-area">
 			<div id="login-box-area">
 
@@ -158,6 +159,7 @@
 					<form id="login-form" method="post" action="/SemiProject/login.me">
 						<div id="login-form-wrap">
 
+							<!-- 아이디 입력 부분 -->
 							<div class="login-input">
 								<div class="input-border">
 									<div class="input-icon">
@@ -170,6 +172,7 @@
 								</div>
 							</div>
 
+							<!-- 비밀번호 입력 부분 -->
 							<div class="login-input">
 								<div class="input-border">
 									<div class="input-icon">
@@ -182,19 +185,25 @@
 								</div>
 							</div>
 
+							
 							<div id="login-box-mini-menu">
+
+								<!-- 로그인 상태 유지 -->
 								<div id="stay-logged-in-1">
 									<input type="checkbox" name="" id="">
 								</div>
 								<div id="stay-logged-in-2">
 									&nbsp;로그인 상태 유지
 								</div>
+
+								<!-- 아이디 찾기, 비밀번호 찾기 -->
 								<div id="login-box-find-menu">
 									<a href="<%= contextPath %>/find.me">아이디 찾기</a>
 									&nbsp;<a href="<%= contextPath %>/find.me">비밀번호 찾기</a>
 								</div>
 							</div>
 
+							<!-- 로그인 버튼 -->
 							<div>
 								<button type="submit">로그인</button>
 							</div>
@@ -203,6 +212,7 @@
 					</form>
 				</div>
 
+				<!-- 회원가입 버튼 -->
 				<div id="login-box-tail">
 					아직 회원이 아니신가요?
 					&nbsp;
@@ -219,6 +229,7 @@
 
 	<script>
 
+		// 아이디, 비밀번호 input 선택 시 테두리 색 변경
 		var input = document.getElementsByClassName('input');
 
 		for (let i = 0; i < input.length; i++) {
