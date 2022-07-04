@@ -937,7 +937,6 @@
             }
 
             // 휴대전화번호 조건 확인, 결과 출력
-
             function checkPhone(){
 
                 var $phoneF = $("#enroll-member-form select[name=phoneF]").val();

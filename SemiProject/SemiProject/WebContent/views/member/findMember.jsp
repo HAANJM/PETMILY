@@ -402,7 +402,7 @@
 									<a href="<%= contextPath %>/find.me?type=1">비밀번호 찾기</a>
 								</div>
 						</div>
-						<form id="enroll-member-form" method="post" onsubmit="return checkAll();" action="/SemiProject/insert.me">
+						<form id="enroll-member-form" method="post" action="/SemiProject/insert.me">
 							<div id="enroll-member-form-wrap">
 	
 								<div class="enroll-row dummy-row-top-pwd">
@@ -494,6 +494,65 @@
 		<%@ include file="../common/footer.jsp" %>
 		
 	</div>
+
+    <script>
+
+        // 이름 조건 확인, 결과 출력
+        function checkName() {
+                
+            var $userName = $("#enroll-member-form input[name=userName]");
+            var $checkNameResult = $("#enroll-member-form span[name=checkNameResult]");
+            var $regExp = /^[가-힣a-zA-Z]{2,20}$/;
+
+            if (!$regExp.test($userName.val())) {
+                        
+                $checkNameResult.css('color', 'red');
+                $checkNameResult.html('2~20자의 한글, 영문 소문자, 대문자만 입력 가능합니다.');
+            }
+            else {
+                
+                $checkNameResult.html('');
+            }
+            if ($userName.val() == '') {
+
+                $checkNameResult.html('');
+            }
+        }
+        
+        // 휴대전화번호 조건 확인, 결과 출력
+        function checkPhone(){
+
+            var $phoneM = $("#enroll-member-form input[name=phoneM]").val();
+            var $phoneB = $("#enroll-member-form input[name=phoneB]").val();
+            var $checkPhoneResult = $("#enroll-member-form span[name=checkPhoneResult]");
+            var $regExp = /^[0-9]{4}$/;
+
+            if (!$regExp.test($phoneM) || !$regExp.test($phoneB)) {
+                
+                $checkPhoneResult.css('color', 'red');
+                $checkPhoneResult.html('휴대전화번호를 전부 입력해주세요.');
+            }
+            if ($regExp.test($phoneM) && $regExp.test($phoneB)) {
+                
+                $checkPhoneResult.html('');
+            }
+            if ($phoneM == '' || $phoneB == '') {
+
+                $checkPhoneResult.html('');
+            }
+        }
+
+        // input number type 글자수 제한 기능
+        function inputNumberMaxLength(object) {
+
+            if (object.value.length > object.maxLength) {
+                
+                object.value = object.value.slice(0, object.maxLength)
+            }
+        }
+
+    </script>
+
 
 </body>
 </html>

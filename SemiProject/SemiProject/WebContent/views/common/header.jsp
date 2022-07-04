@@ -68,6 +68,7 @@
 		font-size: 18px;
 		font-weight: bold;
 		text-align: left;
+		display: flex;
 	}
 	#login-info > div {
 		height: 100%;
@@ -75,7 +76,7 @@
 		float: left;
 	}
 	#profile {
-		width: 80px;
+		width: 22%;
 		display: flex;
 		margin-left: 10px;
 	}
@@ -84,7 +85,15 @@
 		border-radius: 70%;
 		margin: auto;
 	}
-	#user-nickname {width: 200px;}
+	#user-class {
+		width: 30%;
+		text-align: center;
+	}
+	#user-nickname {
+		width: 48%;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
 	#login-menu {text-align: center;}
 	#login-menu > a {color: rgb(125, 125, 125);}
 	
@@ -138,8 +147,8 @@
 						<img src="<%= contextPath %>/resources/blank-profile-picture.png" height="70%">
 					</div>
 
-					<div id="user-nickname">
-						<!-- 회원등급 -->
+					<!-- 회원등급 -->
+					<div id="user-class">
 						<% 
 							String userClass = "";
 						
@@ -151,10 +160,13 @@
 							}
 						%>
 						[<%= userClass %>]
-						&nbsp;
-						<!-- 닉네임 -->
+					</div>
+
+					<!-- 닉네임 -->
+					<div id="user-nickname">
 						<%= loginUser.getUserNickname() %>
 					</div>
+					
 				</div>
 
 				<!-- 로그인 시 보여지는 login-menu -->
