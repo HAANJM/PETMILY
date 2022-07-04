@@ -72,6 +72,15 @@
 		       USER_ID = ?
 	</entry>
 	
+	<entry key="checkEmail">
+		SELECT 
+		       EMAIL
+		  FROM 
+		       MEMBER
+		 WHERE 
+		       EMAIL = ?
+	</entry>
+	
 	<entry key="checkNickname">
 		SELECT 
 		       USER_NICKNAME

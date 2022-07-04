@@ -54,6 +54,7 @@ public class MemberInsertController extends HttpServlet {
 		String phoneM = request.getParameter("phoneM");
 		String phoneB = request.getParameter("phoneB");
 		String phone = phoneF + "-" + phoneM + "-" + phoneB;
+		
 		// 주소 가공
 		String postcode = request.getParameter("postcode");
 		String addressMain = request.getParameter("addressMain");

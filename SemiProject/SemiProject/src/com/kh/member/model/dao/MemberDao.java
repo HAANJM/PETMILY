@@ -124,6 +124,34 @@ public class MemberDao {
 		
 		return result;
 	}
+	
+	public int checkEmail(Connection conn, String inputEmail) {
+		
+		int result = 0;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String sql = prop.getProperty("checkEmail");
+		
+		try {
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, inputEmail);
+			
+			rset = pstmt.executeQuery();
+			
+			if (rset.next()) {
+				
+				result++;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return result;
+	}
 
 	public int checkNickname(Connection conn, String inputNickname) {
 		

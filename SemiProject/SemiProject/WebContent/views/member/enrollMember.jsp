@@ -166,7 +166,7 @@
         text-align: center;
     }
 
-    /* dummy-row top, bottm */
+    /* dummy-row top, bottom */
     .dummy-row-top {
         width: 100%;
         height: 20px;
@@ -245,6 +245,22 @@
 		<%@ include file="../common/header.jsp" %>
 		
         <!-- content -->
+        <script>
+
+            // 로그인 상태로 접근 제한
+            $(document).ready(function(){
+            
+                var loginUser = "<%= loginUser %>";
+
+                if (loginUser != 'null') {
+                    
+                    alert('로그인한 상태에서는 \n해당 페이지에 접근할 수 없습니다.');
+                    history.back();
+                }
+            });
+
+        </script>
+
 		<div id="enroll-member-page-area">
 			<div id="enroll-member-box-area">
 
@@ -314,7 +330,7 @@
                                     <input type="text" name="email" required>
                                 </div>
                                 <div class="enroll-col-3">
-                                    <button>인증번호 받기</button>
+                                    <button onclick="sendEmail();">인증번호 받기</button>
                                 </div>
                             </div>
 
@@ -324,17 +340,10 @@
                                     <span>이메일 인증번호</span>
                                 </div>
                                 <div class="enroll-col-2">
-                                    <input type="text" name="emailChk" required>
-                                    <!-- &#64;
-                                    <select name="" id="">
-                                        <option value=""><input type="text"></option>
-                                        <option value="">gmail.com</option>
-                                        <option value="">naver.com</option>
-                                        <option value="">hanmail.net</option>
-                                    </select> -->
+                                    <input type="text" name="randomCode" required>
                                 </div>
                                 <div class="enroll-col-3">
-                                    <button>이메일 인증번호 확인</button>
+                                    <button onclick="checkRandomCode();">이메일 인증번호 확인</button>
                                 </div>
                             </div>
 
@@ -480,6 +489,7 @@
             var checkIdFlag = false;
             var checkPwdFlag = false;
             var checkMatchPwdFlag = false;
+            var checkEmailFlag = false;
             var checkNameFlag = false;
             var checkNicknameFlag = false;
             var checkYearFlag = false;
@@ -489,13 +499,14 @@
             // 아이디 조건 확인, 결과 출력
             function checkId(){
 
-                var $userId = $("#enroll-member-form input[name=userId]").val();
+                var $userId = $("#enroll-member-form input[name=userId]");
                 var $checkIdResult = $("#enroll-member-form span[name=checkIdResult]");
                 var $regExp = /^[a-z\d_-]{4,20}$/;
 
                 $.ajax({
+
                     url : "checkId.me",
-                    data : {inputId : $userId},
+                    data : {inputId : $userId.val()},
                     success : function(result){
                         
                         if (result < 1) {
@@ -512,14 +523,14 @@
 
                             checkIdFlag = false;
                         } 
-                        if (!$regExp.test($userId)) {
+                        if (!$regExp.test($userId.val())) {
                             
                             $checkIdResult.css('color', 'red');
                             $checkIdResult.html('4~20자의 영문 소문자, 숫자, <br>특수기호 _ 와 - 만 사용 가능합니다.');
 
                             checkIdFlag = false;
                         }
-                        if ($userId == '') {
+                        if ($userId.val() == '') {
 
                             $checkIdResult.html('');
 
@@ -527,21 +538,23 @@
                         }
                     },
                     error : function(){
-
+                        
                         console.log('id check error');
-                    },
+
+                        checkIdFlag = false;
+                    }
                 });
             }
 
             // 비밀번호 조건 확인, 결과 출력
             function checkPwd() {
                 
-                var $userPwd = $("#enroll-member-form input[name=userPwd]").val();
+                var $userPwd = $("#enroll-member-form input[name=userPwd]");
                 var $checkPwdResult = $("#enroll-member-form span[name=checkPwdResult]");
                 var $regExp = /^[a-zA-Z\d!@#$%^]{8,20}$/;
-
-                if (!$regExp.test($userPwd)) {
-                            
+                
+                if (!$regExp.test($userPwd.val())) {
+                    
                     $checkPwdResult.css('color', 'red');
                     $checkPwdResult.html('8~20자의 영문 소문자, 대문자, 숫자, <br>특수기호 ! @ # $ % ^ 만 <br>사용 가능합니다.');
 
@@ -554,22 +567,22 @@
 
                     checkPwdFlag = true;
                 }
-                if ($userPwd == '') {
-
+                if ($userPwd.val() == '') {
+                    
                     $checkPwdResult.html('');
-
+                    
                     checkPwdFlag = false;
                 }
             }
-
+            
             // 비밀번호 확인 조건 확인, 결과 출력
             function checkMatchPwd() {
-
-                var $matchPwd = $("#enroll-member-form input[name=matchPwd]").val();
-                var $userPwd = $("#enroll-member-form input[name=userPwd]").val();
+                
+                var $matchPwd = $("#enroll-member-form input[name=matchPwd]");
+                var $userPwd = $("#enroll-member-form input[name=userPwd]");
                 var $checkMatchPwdResult = $("#enroll-member-form span[name=checkMatchPwdResult]");
-
-                if ($matchPwd == $userPwd) {
+                
+                if ($matchPwd.val() == $userPwd.val()) {
                     
                     $checkMatchPwdResult.css('color', 'green');
                     $checkMatchPwdResult.html('비밀번호가 일치합니다.');
@@ -580,10 +593,10 @@
                     
                     $checkMatchPwdResult.css('color', 'red');
                     $checkMatchPwdResult.html('비밀번호가 일치하지 않습니다.');
-
+                    
                     checkMatchPwdFlag = false;
                 }
-                if ($matchPwd == '') {
+                if ($matchPwd.val() == '') {
 
                     $checkMatchPwdResult.html('');
 
@@ -591,30 +604,169 @@
                 }
             }
 
+            // 이메일 중복 체크, 이메일 발송
+            function sendEmail() {
+                
+                var $email = $("#enroll-member-form input[name=email]");
+                var $randomCode = $("#enroll-member-form input[name=randomCode]");
+                
+                $.ajax({
+
+                    url : "checkEmail.me",
+                    data : {inputEmail : $email.val()},
+                    success : function(result) {
+                        
+                        if (result == 1) {
+                            
+                            alert('중복되는 사용자가 있습니다.');
+                            $email.focus();
+
+                            checkEmailFlag = false;
+                        }
+                        if (result == 2) {
+                            
+                            alert('이메일 주소를 입력해주세요.');
+                            $email.focus();
+
+                            checkEmailFlag = false;
+                        }
+                        if (result == 0) {
+                            
+                            $randomCode.val('');
+                            $randomCode.css('background-color', 'white');
+                            $randomCode.attr('readonly', false);
+
+                            $.ajax({
+
+                                url : "sendEmail.ac",
+                                data : {inputEmail : $email.val()},
+                                success : function(result) {
+                                    
+                                    if (result == 0) {
+                                        
+                                        alert('인증번호 이메일을 발송하지 못했습니다.\n다시 시도해주세요.');
+
+                                        checkEmailFlag = false;
+                                    }
+                                    if (result == 1) {
+                                        
+                                        alert('인증번호 이메일을 발송했습니다.\n10분내로 인증을 완료해주세요.');
+
+                                        checkEmailFlag = false;
+                                    }
+                                },
+                                error : function(){
+
+                                    console.log('send email error');
+
+                                    checkEmailFlag = false;
+                                }
+                            });
+                        }
+                    },
+                    error : function(){
+
+                        console.log('email check error');
+
+                        checkEmailFlag = false;
+                    }
+                });
+            }
+
+            // 인증번호 확인
+            function checkRandomCode(){
+
+                var $email = $("#enroll-member-form input[name=email]");
+                var $randomCode = $("#enroll-member-form input[name=randomCode]");
+                
+                $.ajax({
+
+                    url : "checkRandomCode.ac",
+                    data : {
+                        inputEmail : $email.val(),
+                        inputRandomCode : $randomCode.val()
+                    },
+                    success : function(result){
+                        
+
+                        if (result == 0) {
+                            
+                            alert('이메일 주소를 다시 확인해주세요.');
+                            $email.focus();
+
+                            checkEmailFlag = false;
+                        }
+                        if (result == 1) {
+                            
+                            alert('인증 성공');
+                            $randomCode.css('background-color', 'rgb(190, 190, 190)');
+                            $randomCode.attr('readonly', true);
+
+                            checkEmailFlag = true;
+                        }
+                        if (result == 2) {
+                            
+                            alert('인증 시간이 초과되었습니다.\n다시 인증번호를 요청해주세요.');
+                            $randomCode.val('');
+                            $randomCode.focus();
+
+                            checkEmailFlag = false;
+                        }
+                        if (result == 3) {
+                            
+                            alert('인증번호가 일치하지 않습니다.');
+                            $randomCode.focus();
+
+                            checkEmailFlag = false;
+                        }
+                        if (result == 4) {
+                            
+                            alert('이메일 주소를 입력해주세요.');
+                            $email.focus();
+
+                            checkEmailFlag = false;
+                        }
+                        if (result == 5) {
+                            
+                            alert('인증번호를 입력해주세요.');
+                            $randomCode.focus();
+
+                            checkEmailFlag = false;
+                        }
+                    },
+                    error : function(){
+
+                        console.log('randomcode check error');
+
+                        checkEmailFlag = false;
+                    }
+                });
+            }
+            
             // 이름 조건 확인, 결과 출력
             function checkName() {
                 
-                var $userName = $("#enroll-member-form input[name=userName]").val();
+                var $userName = $("#enroll-member-form input[name=userName]");
                 var $checkNameResult = $("#enroll-member-form span[name=checkNameResult]");
                 var $regExp = /^[가-힣a-zA-Z]{2,20}$/;
 
-                if (!$regExp.test($userName)) {
+                if (!$regExp.test($userName.val())) {
                             
                     $checkNameResult.css('color', 'red');
                     $checkNameResult.html('2~20자의 한글, 영문 소문자, 대문자만 사용 가능합니다.');
-
+                    
                     checkNameFlag = false;
                 }
                 else {
-
+                    
                     $checkNameResult.html('');
-
+                    
                     checkNameFlag = true;
                 }
-                if ($userName == '') {
+                if ($userName.val() == '') {
 
                     $checkNameResult.html('');
-
+                    
                     checkNameFlag = false;
                 }
             }
@@ -622,13 +774,14 @@
             // 닉네임 조건 확인, 결과 출력
             function checkNickname(){
 
-                var $userNickname = $("#enroll-member-form input[name=userNickname]").val();
+                var $userNickname = $("#enroll-member-form input[name=userNickname]");
                 var $checkNicknameResult = $("#enroll-member-form span[name=checkNicknameResult]");
                 var $regExp = /^[가-힣a-z\d_-]{2,20}$/;
 
                 $.ajax({
+
                     url : "checkNickname.me",
-                    data : {inputNickname : $userNickname},
+                    data : {inputNickname : $userNickname.val()},
                     success : function(result){
                         
                         if (result < 1) {
@@ -645,14 +798,14 @@
 
                             checkNicknameFlag = false;
                         } 
-                        if (!$regExp.test($userNickname)) {
+                        if (!$regExp.test($userNickname.val())) {
                             
                             $checkNicknameResult.css('color', 'red');
                             $checkNicknameResult.html('2~20자의 한글, 영문 소문자, 숫자, <br>특수기호 _ 와 - 만 사용 가능합니다.');
 
                             checkNicknameFlag = false;
                         }
-                        if ($userNickname == '') {
+                        if ($userNickname.val() == '') {
 
                             $checkNicknameResult.html('');
 
@@ -662,7 +815,9 @@
                     error : function(){
 
                         console.log('nickname check error');
-                    },
+
+                        checkNicknameFlag = false;
+                    }
                 });
             }
 
@@ -670,10 +825,10 @@
             // 년
             function checkYear() {
                 
-                var $year = $("#enroll-member-form input[name=year]").val();
+                var $year = $("#enroll-member-form input[name=year]");
                 var $regExp = /^(1[9]|2[0])\d\d$/;
 
-                if (!$regExp.test($year) || $year > 2022) {
+                if (!$regExp.test($year.val()) || $year.val() > 2022) {
                             
                     checkYearFlag = false;
                 }
@@ -681,7 +836,7 @@
 
                     checkYearFlag = true;
                 }
-                if ($year == '') {
+                if ($year.val() == '') {
 
                     checkYearFlag = false;
                 }
@@ -793,6 +948,7 @@
                 var $regExp = /^[0-9]{4}$/;
 
                 $.ajax({
+
                     url : "checkPhone.me",
                     data : {inputPhone : $phone},
                     success : function(result){
@@ -828,7 +984,9 @@
                     error : function(){
 
                         console.log('phone check error');
-                    },
+
+                        checkPhoneFlag = false;
+                    }
                 });
             }
 
@@ -865,6 +1023,13 @@
                     alert('비밀번호가 일치하지 않습니다.');
                     enrollForm.matchPwd.focus();
                     
+                    return false;
+                }
+                if (checkEmailFlag == false) {
+
+                    alert('이메일을 조건에 맞게 작성해주세요.');
+                    enrollForm.eamil.focus();
+
                     return false;
                 }
                 if (checkNameFlag == false) {

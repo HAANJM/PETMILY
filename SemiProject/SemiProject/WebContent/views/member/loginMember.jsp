@@ -148,6 +148,22 @@
 		<%@ include file="../common/header.jsp" %>
 		
 		<!-- content -->
+		<script>
+
+            // 로그인 상태로 접근 제한
+            $(document).ready(function(){
+            
+                var loginUser = "<%= loginUser %>";
+
+                if (loginUser != 'null') {
+                    
+                    alert('로그인한 상태에서는 \n해당 페이지에 접근할 수 없습니다.');
+                    history.back();
+                }
+            });
+
+        </script>
+
 		<div id="login-page-area">
 			<div id="login-box-area">
 
@@ -166,8 +182,7 @@
 										<img src="<%= contextPath %>/resources/login-id-picture.png">
 									</div>
 									<div class="input-wrap">
-										<input class="input" type="text" name="userId" placeholder="아이디" 
-										onfocus="this.placeholder=''" onblur="this.placeholder='아이디'" required>
+										<input class="input" type="text" name="userId" placeholder="아이디" required>
 									</div>
 								</div>
 							</div>
@@ -179,8 +194,7 @@
 										<img src="<%= contextPath %>/resources/login-pwd-picture.png">
 									</div>
 									<div class="input-wrap">
-										<input class="input" type="password" name="userPwd" placeholder="비밀번호" 
-										onfocus="this.placeholder=''" onblur="this.placeholder='비밀번호'" required>
+										<input class="input" type="password" name="userPwd" placeholder="비밀번호" required>
 									</div>
 								</div>
 							</div>
@@ -198,8 +212,8 @@
 
 								<!-- 아이디 찾기, 비밀번호 찾기 -->
 								<div id="login-box-find-menu">
-									<a href="<%= contextPath %>/find.me">아이디 찾기</a>
-									&nbsp;<a href="<%= contextPath %>/find.me">비밀번호 찾기</a>
+									<a href="<%= contextPath %>/find.me?type=0">아이디 찾기</a>
+									&nbsp;<a href="<%= contextPath %>/find.me?type=1">비밀번호 찾기</a>
 								</div>
 							</div>
 

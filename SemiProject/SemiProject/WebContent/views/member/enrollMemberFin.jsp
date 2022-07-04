@@ -93,6 +93,22 @@
 		<%@ include file="../common/header.jsp" %>
 		
 		<!-- content -->
+		<script>
+
+            // 로그인 상태로 접근 제한
+            $(document).ready(function(){
+            
+                var loginUser = "<%= loginUser %>";
+
+                if (loginUser != 'null') {
+                    
+                    alert('로그인한 상태에서는 \n해당 페이지에 접근할 수 없습니다.');
+                    history.back();
+                }
+            });
+
+        </script>
+
 		<div id="enroll-member-page-area">
 			<div id="enroll-member-box-area">
 

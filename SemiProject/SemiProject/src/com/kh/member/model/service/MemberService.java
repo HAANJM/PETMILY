@@ -41,6 +41,16 @@ public class MemberService {
 		
 		return result;
 	}
+	
+	public int checkEmail(String inputEmail) {
+		
+		Connection conn = getConnection();
+		int result = new MemberDao().checkEmail(conn, inputEmail);
+		
+		close(conn);
+		
+		return result;
+	}
 
 	public int checkNickname(String inputNickname) {
 		

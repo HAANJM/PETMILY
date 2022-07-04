@@ -6,19 +6,20 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+
+import com.kh.member.model.service.MemberService;
 
 /**
- * Servlet implementation class MemberFindFormController
+ * Servlet implementation class AjaxCheckEmailController
  */
-@WebServlet("/find.me")
-public class MemberFindFormController extends HttpServlet {
+@WebServlet("/checkEmail.me")
+public class AjaxCheckEmailController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public MemberFindFormController() {
+    public AjaxCheckEmailController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -27,14 +28,26 @@ public class MemberFindFormController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		String inputEmail = request.getParameter("inputEmail");
 		
-		int type = Integer.parseInt(request.getParameter("type"));
+		int result = 0;
 		
-		HttpSession session = request.getSession();
-		
-		session.setAttribute("type", type);
-		
-		request.getRequestDispatcher("views/member/findMember.jsp").forward(request, response);
+		if (inputEmail == "") { // 이메일 입력 값이 없을 때
+			
+			result = 2;
+	        
+	        response.setContentType("text/html; charset=UTF-8");
+	        
+	        response.getWriter().print(result);
+		} else { // 이메일 입력 값이 있을 때
+			
+			result = new MemberService().checkEmail(inputEmail);
+			
+			response.setContentType("text/html; charset=UTF-8");
+			
+			response.getWriter().print(result);
+		}
 	}
 
 	/**

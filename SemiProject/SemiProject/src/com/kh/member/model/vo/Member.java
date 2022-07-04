@@ -10,7 +10,7 @@ public class Member {
 	private String userName; // USER_NAME VARCHAR2(20 BYTE)
 	private String userNickname; // USER_NICKNAME VARCHAR2(20 BYTE)
 	private Date enrollDate; // ENROLL_DATE DATE
-	// birthDate 필드 String으로 변경함(임시)
+	// birthDate 필드 String으로 변경함
 	private String birthDate; // BIRTH_DATE DATE
 	private String email; // EMAIL VARCHAR2(100 BYTE)
 	private String address; // ADDRESS VARCHAR2(100 BYTE)
