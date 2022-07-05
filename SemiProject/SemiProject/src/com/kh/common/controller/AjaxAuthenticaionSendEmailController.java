@@ -81,10 +81,10 @@ public class AjaxAuthenticaionSendEmailController extends HttpServlet {
             msg.addRecipient(Message.RecipientType.TO, new InternetAddress(inputEmail)); 
 
             // 제목
-            msg.setSubject("PETMILY 회원가입 인증번호");
+            msg.setSubject("PETMILY 인증번호");
 
             // 내용
-            msg.setText("안녕하세요. \n\n회원가입 인증번호는 " + randomCode + " 입니다.\n\n감사합니다.");
+            msg.setText("안녕하세요. \n\n인증번호는 " + randomCode + " 입니다.\n\n감사합니다.");
 
             // 전송
             Transport.send(msg);

@@ -208,5 +208,87 @@ public class MemberDao {
 		
 		return result;
 	}
+
+	public String findIdMember(Connection conn, Member inputList) {
+		
+		String userId = null;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String sql = prop.getProperty("findIdMember");
+		
+		try {
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, inputList.getUserName());
+			pstmt.setString(2, inputList.getPhone());
+			
+			rset = pstmt.executeQuery();
+			
+			if (rset.next()) {
+				
+				userId = rset.getString("USER_ID");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return userId;
+	}
+
+	public int findPwdMember(Connection conn, Member inputList) {
+		
+		int result = 0;
+		PreparedStatement pstmt = null;
+		String sql = prop.getProperty("findPwdMember");
+		
+		try {
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, inputList.getUserPwd());
+			pstmt.setString(2, inputList.getUserName());
+			pstmt.setString(3, inputList.getPhone());
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+	public int checkEmailFindPwd(Connection conn, Member inputList) {
+		
+		int result = 0;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String sql = prop.getProperty("checkEmailFindPwd");
+		
+		try {
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, inputList.getEmail());
+			pstmt.setString(2, inputList.getUserName());
+			pstmt.setString(3, inputList.getPhone());
+			
+			rset = pstmt.executeQuery();
+			
+			if (rset.next()) {
+				
+				result++;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return result;
+	}
 	
 }

@@ -8,18 +8,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.kh.member.model.service.MemberService;
+import com.kh.member.model.vo.Member;
 
 /**
  * Servlet implementation class AjaxCheckEmailController
  */
-@WebServlet("/checkEmail.me")
-public class AjaxCheckEmailController extends HttpServlet {
+@WebServlet("/checkEmailFindPwd.me")
+public class AjaxCheckEmailFindPwdController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AjaxCheckEmailController() {
+    public AjaxCheckEmailFindPwdController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -28,26 +29,23 @@ public class AjaxCheckEmailController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		
+		// 입력 값 가져오기
+		String inputUserName = request.getParameter("inputUserName");
 		String inputEmail = request.getParameter("inputEmail");
+		String inputPhone = request.getParameter("inputPhone");
 		
-		int result = 0;
+		// 입력 값 담기
+		Member inputList = new Member();
+		inputList.setUserName(inputUserName);
+		inputList.setEmail(inputEmail);
+		inputList.setPhone(inputPhone);
 		
-		if (inputEmail == "" || inputEmail.contains(" ")) { // 이메일 입력 값이 없을 때
-			
-			result = 2;
-	        
-	        response.setContentType("text/html; charset=UTF-8");
-	        
-	        response.getWriter().print(result);
-		} else { // 이메일 입력 값이 있을 때
-			
-			result = new MemberService().checkEmail(inputEmail);
-			
-			response.setContentType("text/html; charset=UTF-8");
-			
-			response.getWriter().print(result);
-		}
+		int result = new MemberService().checkEmailFindPwd(inputList);
+		
+		response.setContentType("text/html; charset=UTF-8");
+		
+		response.getWriter().print(result);
 	}
 
 	/**

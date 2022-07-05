@@ -327,10 +327,10 @@
                                     <span>이메일 주소</span>
                                 </div>
                                 <div class="enroll-col-2">
-                                    <input type="text" name="email" required>
+                                    <input type="text" name="email" maxlength="100" required>
                                 </div>
                                 <div class="enroll-col-3">
-                                    <button onclick="sendEmail();">인증번호 받기</button>
+                                    <button type="button" onclick="sendEmail();">인증번호 받기</button>
                                 </div>
                             </div>
 
@@ -340,10 +340,10 @@
                                     <span>이메일 인증번호</span>
                                 </div>
                                 <div class="enroll-col-2">
-                                    <input type="text" name="randomCode" required>
+                                    <input type="text" name="randomCode" maxlength="10" required>
                                 </div>
                                 <div class="enroll-col-3">
-                                    <button onclick="checkRandomCode();">이메일 인증번호 확인</button>
+                                    <button type="button" onclick="checkRandomCode();">이메일 인증번호 확인</button>
                                 </div>
                             </div>
 
@@ -483,201 +483,209 @@
 		<!-- footer -->
 		<%@ include file="../common/footer.jsp" %>
 		
-        <script>
+    </div>
 
-            // 각각 조건들 확인용 flag
-            var checkIdFlag = false;
-            var checkPwdFlag = false;
-            var checkMatchPwdFlag = false;
-            var checkEmailFlag = false;
-            var checkNameFlag = false;
-            var checkNicknameFlag = false;
-            var checkYearFlag = false;
-            var checkDateFlag = false;
-            var checkPhoneFlag = false;
-            
-            // 아이디 조건 확인, 결과 출력
-            function checkId(){
+    <script>
 
-                var $userId = $("#enroll-member-form input[name=userId]");
-                var $checkIdResult = $("#enroll-member-form span[name=checkIdResult]");
-                var $regExp = /^[a-z\d_-]{4,20}$/;
+        // 각각 조건들 확인용 flag
+        var checkIdFlag = false;
+        var checkPwdFlag = false;
+        var checkMatchPwdFlag = false;
+        var checkEmailFlag = false;
+        var checkRandomCodeFlag = false;
+        var checkNameFlag = false;
+        var checkNicknameFlag = false;
+        var checkYearFlag = false;
+        var checkDateFlag = false;
+        var checkPhoneFlag = false;
+        
+        // 아이디 조건 확인, 결과 출력
+        function checkId() {
 
-                $.ajax({
+            var $userId = $("#enroll-member-form input[name=userId]");
+            var $checkIdResult = $("#enroll-member-form span[name=checkIdResult]");
+            var $regExp = /^[a-z\d_-]{4,20}$/;
 
-                    url : "checkId.me",
-                    data : {inputId : $userId.val()},
-                    success : function(result){
+            $.ajax({
+
+                url : "checkId.me",
+                data : {inputId : $userId.val()},
+                success : function(result) {
+                    
+                    if (result < 1) {
                         
-                        if (result < 1) {
-                            
-                            $checkIdResult.css('color', 'green');
-                            $checkIdResult.html('사용 가능한 아이디 입니다.');
+                        $checkIdResult.css('color', 'green');
+                        $checkIdResult.html('사용 가능한 아이디 입니다.');
 
-                            checkIdFlag = true;
-                        }
-                        if (result == 1) {
+                        checkIdFlag = true;
+                    }
+                    if (result == 1) {
 
-                            $checkIdResult.css('color', 'red');
-                            $checkIdResult.html('중복되는 사용자가 있습니다.');
+                        $checkIdResult.css('color', 'red');
+                        $checkIdResult.html('중복되는 사용자가 있습니다.');
 
-                            checkIdFlag = false;
-                        } 
-                        if (!$regExp.test($userId.val())) {
-                            
-                            $checkIdResult.css('color', 'red');
-                            $checkIdResult.html('4~20자의 영문 소문자, 숫자, <br>특수기호 _ 와 - 만 사용 가능합니다.');
-
-                            checkIdFlag = false;
-                        }
-                        if ($userId.val() == '') {
-
-                            $checkIdResult.html('');
-
-                            checkIdFlag = false;
-                        }
-                    },
-                    error : function(){
+                        checkIdFlag = false;
+                    } 
+                    if (!$regExp.test($userId.val())) {
                         
-                        console.log('id check error');
+                        $checkIdResult.css('color', 'red');
+                        $checkIdResult.html('4~20자의 영문 소문자, 숫자, <br>특수기호 _ 와 - 만 사용 가능합니다.');
 
                         checkIdFlag = false;
                     }
-                });
-            }
+                    if ($userId.val() == '') {
 
-            // 비밀번호 조건 확인, 결과 출력
-            function checkPwd() {
-                
-                var $userPwd = $("#enroll-member-form input[name=userPwd]");
-                var $checkPwdResult = $("#enroll-member-form span[name=checkPwdResult]");
-                var $regExp = /^[a-zA-Z\d!@#$%^]{8,20}$/;
-                
-                if (!$regExp.test($userPwd.val())) {
+                        $checkIdResult.html('');
+
+                        checkIdFlag = false;
+                    }
+                },
+                error : function() {
                     
-                    $checkPwdResult.css('color', 'red');
-                    $checkPwdResult.html('8~20자의 영문 소문자, 대문자, 숫자, <br>특수기호 ! @ # $ % ^ 만 <br>사용 가능합니다.');
+                    console.log('id check error');
 
-                    checkPwdFlag = false;
+                    checkIdFlag = false;
                 }
-                else {
+            });
+        }
 
-                    $checkPwdResult.css('color', 'green');
-                    $checkPwdResult.html('사용 가능한 비밀번호 입니다.');
-
-                    checkPwdFlag = true;
-                }
-                if ($userPwd.val() == '') {
-                    
-                    $checkPwdResult.html('');
-                    
-                    checkPwdFlag = false;
-                }
-            }
+        // 비밀번호 조건 확인, 결과 출력
+        function checkPwd() {
             
-            // 비밀번호 확인 조건 확인, 결과 출력
-            function checkMatchPwd() {
+            var $userPwd = $("#enroll-member-form input[name=userPwd]");
+            var $checkPwdResult = $("#enroll-member-form span[name=checkPwdResult]");
+            var $regExp = /^[a-zA-Z\d!@#$%^]{8,20}$/;
+            
+            if (!$regExp.test($userPwd.val())) {
                 
-                var $matchPwd = $("#enroll-member-form input[name=matchPwd]");
-                var $userPwd = $("#enroll-member-form input[name=userPwd]");
-                var $checkMatchPwdResult = $("#enroll-member-form span[name=checkMatchPwdResult]");
-                
-                if ($matchPwd.val() == $userPwd.val()) {
-                    
-                    $checkMatchPwdResult.css('color', 'green');
-                    $checkMatchPwdResult.html('비밀번호가 일치합니다.');
+                $checkPwdResult.css('color', 'red');
+                $checkPwdResult.html('8~20자의 영문 소문자, 대문자, 숫자, <br>특수기호 ! @ # $ % ^ 만 <br>사용 가능합니다.');
 
-                    checkMatchPwdFlag = true;
-                }
-                else {
-                    
-                    $checkMatchPwdResult.css('color', 'red');
-                    $checkMatchPwdResult.html('비밀번호가 일치하지 않습니다.');
-                    
-                    checkMatchPwdFlag = false;
-                }
-                if ($matchPwd.val() == '') {
-
-                    $checkMatchPwdResult.html('');
-
-                    checkMatchPwdFlag = false;
-                }
+                checkPwdFlag = false;
             }
+            else {
 
-            // 이메일 중복 체크, 이메일 발송
-            function sendEmail() {
-                
-                var $email = $("#enroll-member-form input[name=email]");
-                var $randomCode = $("#enroll-member-form input[name=randomCode]");
-                
-                $.ajax({
+                $checkPwdResult.css('color', 'green');
+                $checkPwdResult.html('사용 가능한 비밀번호 입니다.');
 
-                    url : "checkEmail.me",
-                    data : {inputEmail : $email.val()},
-                    success : function(result) {
+                checkPwdFlag = true;
+            }
+            if ($userPwd.val() == '') {
+                
+                $checkPwdResult.html('');
+                
+                checkPwdFlag = false;
+            }
+        }
+        
+        // 비밀번호 확인 조건 확인, 결과 출력
+        function checkMatchPwd() {
+            
+            var $matchPwd = $("#enroll-member-form input[name=matchPwd]");
+            var $userPwd = $("#enroll-member-form input[name=userPwd]");
+            var $checkMatchPwdResult = $("#enroll-member-form span[name=checkMatchPwdResult]");
+            
+            if ($matchPwd.val() == $userPwd.val()) {
+                
+                $checkMatchPwdResult.css('color', 'green');
+                $checkMatchPwdResult.html('비밀번호가 일치합니다.');
+
+                checkMatchPwdFlag = true;
+            }
+            else {
+                
+                $checkMatchPwdResult.css('color', 'red');
+                $checkMatchPwdResult.html('비밀번호가 일치하지 않습니다.');
+                
+                checkMatchPwdFlag = false;
+            }
+            if ($matchPwd.val() == '') {
+
+                $checkMatchPwdResult.html('');
+
+                checkMatchPwdFlag = false;
+            }
+        }
+
+        // 이메일 중복 체크, 이메일 발송
+        function  sendEmail() {
+            
+            var $email = $("#enroll-member-form input[name=email]");
+            var $randomCode = $("#enroll-member-form input[name=randomCode]");
+            
+            checkEmailFlag = false;
+            checkRandomCodeFlag = false;
+
+            $.ajax({
+
+                url : "checkEmail.me",
+                data : {inputEmail : $email.val()},
+                success : function(result) {
+                    
+                    if (result == 1) {
                         
-                        if (result == 1) {
-                            
-                            alert('중복되는 사용자가 있습니다.');
-                            $email.focus();
-
-                            checkEmailFlag = false;
-                        }
-                        if (result == 2) {
-                            
-                            alert('이메일 주소를 입력해주세요.');
-                            $email.focus();
-
-                            checkEmailFlag = false;
-                        }
-                        if (result == 0) {
-                            
-                            $randomCode.val('');
-                            $randomCode.css('background-color', 'white');
-                            $randomCode.attr('readonly', false);
-
-                            $.ajax({
-
-                                url : "sendEmail.ac",
-                                data : {inputEmail : $email.val()},
-                                success : function(result) {
-                                    
-                                    if (result == 0) {
-                                        
-                                        alert('인증번호 이메일을 발송하지 못했습니다.\n다시 시도해주세요.');
-
-                                        checkEmailFlag = false;
-                                    }
-                                    if (result == 1) {
-                                        
-                                        alert('인증번호 이메일을 발송했습니다.\n10분내로 인증을 완료해주세요.');
-
-                                        checkEmailFlag = false;
-                                    }
-                                },
-                                error : function(){
-
-                                    console.log('send email error');
-
-                                    checkEmailFlag = false;
-                                }
-                            });
-                        }
-                    },
-                    error : function(){
-
-                        console.log('email check error');
+                        alert('중복되는 사용자가 있습니다.');
+                        $email.focus();
 
                         checkEmailFlag = false;
                     }
-                });
-            }
+                    if (result == 2) {
+                        
+                        alert('이메일 주소를 입력해주세요.');
+                        $email.focus();
 
-            // 인증번호 확인
-            function checkRandomCode(){
+                        checkEmailFlag = false;
+                    }
+                    if (result == 0) {
+                        
+                        $randomCode.val('');
+                        $randomCode.css('background-color', 'white');
+                        $randomCode.attr('readonly', false);
 
-                var $email = $("#enroll-member-form input[name=email]");
-                var $randomCode = $("#enroll-member-form input[name=randomCode]");
+                        $.ajax({
+
+                            url : "sendEmail.ac",
+                            data : {inputEmail : $email.val()},
+                            success : function(result) {
+                                
+                                if (result == 0) {
+                                    
+                                    alert('인증번호 이메일을 발송하지 못했습니다.\n다시 시도해주세요.');
+
+                                    checkEmailFlag = false;
+                                }
+                                if (result == 1) {
+                                    
+                                    alert('인증번호 이메일을 발송했습니다.\n10분내로 인증을 완료해주세요.');
+
+                                    checkEmailFlag = true;
+                                }
+                            },
+                            error : function() {
+
+                                console.log('send email error');
+
+                                checkEmailFlag = false;
+                            }
+                        });
+                    }
+                },
+                error : function() {
+
+                    console.log('email check error');
+
+                    checkEmailFlag = false;
+                }
+            });
+        }
+
+        // 인증번호 확인
+        function checkRandomCode() {
+
+            var $email = $("#enroll-member-form input[name=email]");
+            var $randomCode = $("#enroll-member-form input[name=randomCode]");
+            
+            if (checkEmailFlag == true) {
                 
                 $.ajax({
 
@@ -686,7 +694,7 @@
                         inputEmail : $email.val(),
                         inputRandomCode : $randomCode.val()
                     },
-                    success : function(result){
+                    success : function(result) {
                         
 
                         if (result == 0) {
@@ -694,7 +702,7 @@
                             alert('이메일 주소를 다시 확인해주세요.');
                             $email.focus();
 
-                            checkEmailFlag = false;
+                            checkRandomCodeFlag = false;
                         }
                         if (result == 1) {
                             
@@ -702,7 +710,7 @@
                             $randomCode.css('background-color', 'rgb(190, 190, 190)');
                             $randomCode.attr('readonly', true);
 
-                            checkEmailFlag = true;
+                            checkRandomCodeFlag = true;
                         }
                         if (result == 2) {
                             
@@ -710,209 +718,205 @@
                             $randomCode.val('');
                             $randomCode.focus();
 
-                            checkEmailFlag = false;
+                            checkRandomCodeFlag = false;
                         }
                         if (result == 3) {
                             
                             alert('인증번호가 일치하지 않습니다.');
                             $randomCode.focus();
 
-                            checkEmailFlag = false;
+                            checkRandomCodeFlag = false;
                         }
                         if (result == 4) {
                             
                             alert('이메일 주소를 입력해주세요.');
                             $email.focus();
 
-                            checkEmailFlag = false;
+                            checkRandomCodeFlag = false;
                         }
                         if (result == 5) {
                             
                             alert('인증번호를 입력해주세요.');
                             $randomCode.focus();
 
-                            checkEmailFlag = false;
+                            checkRandomCodeFlag = false;
                         }
                     },
-                    error : function(){
+                    error : function() {
 
                         console.log('randomcode check error');
 
-                        checkEmailFlag = false;
+                        checkRandomCodeFlag = false;
                     }
                 });
             }
-            
-            // 이름 조건 확인, 결과 출력
-            function checkName() {
+            if (checkEmailFlag == false) {
                 
-                var $userName = $("#enroll-member-form input[name=userName]");
-                var $checkNameResult = $("#enroll-member-form span[name=checkNameResult]");
-                var $regExp = /^[가-힣a-zA-Z]{2,20}$/;
+                alert('이메일 주소를 입력 후 인증번호 받기 버튼을 눌러주세요.');
+                $email.focus();
 
-                if (!$regExp.test($userName.val())) {
-                            
-                    $checkNameResult.css('color', 'red');
-                    $checkNameResult.html('2~20자의 한글, 영문 소문자, 대문자만 사용 가능합니다.');
-                    
-                    checkNameFlag = false;
-                }
-                else {
-                    
-                    $checkNameResult.html('');
-                    
-                    checkNameFlag = true;
-                }
-                if ($userName.val() == '') {
-
-                    $checkNameResult.html('');
-                    
-                    checkNameFlag = false;
-                }
+                checkRandomCodeFlag = false;
             }
+        }
+        
+        // 이름 조건 확인, 결과 출력
+        function checkName() {
+            
+            var $userName = $("#enroll-member-form input[name=userName]");
+            var $checkNameResult = $("#enroll-member-form span[name=checkNameResult]");
+            var $regExp = /^[가-힣a-zA-Z]{2,20}$/;
 
-            // 닉네임 조건 확인, 결과 출력
-            function checkNickname(){
-
-                var $userNickname = $("#enroll-member-form input[name=userNickname]");
-                var $checkNicknameResult = $("#enroll-member-form span[name=checkNicknameResult]");
-                var $regExp = /^[가-힣a-z\d_-]{2,20}$/;
-
-                $.ajax({
-
-                    url : "checkNickname.me",
-                    data : {inputNickname : $userNickname.val()},
-                    success : function(result){
+            if (!$regExp.test($userName.val())) {
                         
-                        if (result < 1) {
-                            
-                            $checkNicknameResult.css('color', 'green');
-                            $checkNicknameResult.html('사용 가능한 닉네임 입니다.');
+                $checkNameResult.css('color', 'red');
+                $checkNameResult.html('2~20자의 한글, 영문 소문자, 대문자만 사용 가능합니다.');
+                
+                checkNameFlag = false;
+            }
+            else {
+                
+                $checkNameResult.html('');
+                
+                checkNameFlag = true;
+            }
+            if ($userName.val() == '') {
 
-                            checkNicknameFlag = true;
-                        }
-                        if (result == 1) {
+                $checkNameResult.html('');
+                
+                checkNameFlag = false;
+            }
+        }
 
-                            $checkNicknameResult.css('color', 'red');
-                            $checkNicknameResult.html('중복되는 사용자가 있습니다.');
+        // 닉네임 조건 확인, 결과 출력
+        function checkNickname() {
 
-                            checkNicknameFlag = false;
-                        } 
-                        if (!$regExp.test($userNickname.val())) {
-                            
-                            $checkNicknameResult.css('color', 'red');
-                            $checkNicknameResult.html('2~20자의 한글, 영문 소문자, 숫자, <br>특수기호 _ 와 - 만 사용 가능합니다.');
+            var $userNickname = $("#enroll-member-form input[name=userNickname]");
+            var $checkNicknameResult = $("#enroll-member-form span[name=checkNicknameResult]");
+            var $regExp = /^[가-힣a-z\d_-]{2,20}$/;
 
-                            checkNicknameFlag = false;
-                        }
-                        if ($userNickname.val() == '') {
+            $.ajax({
 
-                            $checkNicknameResult.html('');
+                url : "checkNickname.me",
+                data : {inputNickname : $userNickname.val()},
+                success : function(result) {
+                    
+                    if (result < 1) {
+                        
+                        $checkNicknameResult.css('color', 'green');
+                        $checkNicknameResult.html('사용 가능한 닉네임 입니다.');
 
-                            checkNicknameFlag = false;
-                        }
-                    },
-                    error : function(){
+                        checkNicknameFlag = true;
+                    }
+                    if (result == 1) {
 
-                        console.log('nickname check error');
+                        $checkNicknameResult.css('color', 'red');
+                        $checkNicknameResult.html('중복되는 사용자가 있습니다.');
+
+                        checkNicknameFlag = false;
+                    } 
+                    if (!$regExp.test($userNickname.val())) {
+                        
+                        $checkNicknameResult.css('color', 'red');
+                        $checkNicknameResult.html('2~20자의 한글, 영문 소문자, 숫자, <br>특수기호 _ 와 - 만 사용 가능합니다.');
 
                         checkNicknameFlag = false;
                     }
-                });
-            }
+                    if ($userNickname.val() == '') {
 
-            // 생년월일 조건 확인, 결과 출력
-            // 년
-            function checkYear() {
-                
-                var $year = $("#enroll-member-form input[name=year]");
-                var $regExp = /^(1[9]|2[0])\d\d$/;
+                        $checkNicknameResult.html('');
 
-                if (!$regExp.test($year.val()) || $year.val() > 2022) {
-                            
-                    checkYearFlag = false;
-                }
-                else {
-
-                    checkYearFlag = true;
-                }
-                if ($year.val() == '') {
-
-                    checkYearFlag = false;
-                }
-            }
-            // 월
-            function checkDate() {
-                
-                var $date = $("#enroll-member-form input[name=date]").val();
-                var $month = $("#enroll-member-form select[name=month]").val();
-                var $year = $("#enroll-member-form input[name=year]").val();
-                var $regExp = /^[0-9]{1,2}$/;
-                
-                if (!$regExp.test($date)) {
-
-                    checkDateFlag = false;
-                }
-                else {
-
-                    if ($month == 1 || $month == 3 || $month == 5 || $month == 7 || $month == 8 || $month == 10 || $month == 12) {
-                        
-                        if ($date > 31) {
-
-                            checkDateFlag = false;
-                        }
-                        else {
-
-                            checkDateFlag = true;
-                        }
+                        checkNicknameFlag = false;
                     }
-                    if ($month == 4 || $month == 6 || $month == 9 || $month == 11) {
-                        
-                        if ($date > 30) {
-    
-                            checkDateFlag = false;
-                        }
-                        else {
+                },
+                error : function() {
 
-                            checkDateFlag = true;
-                        }
+                    console.log('nickname check error');
+
+                    checkNicknameFlag = false;
+                }
+            });
+        }
+
+        // 생년월일 조건 확인, 결과 출력
+        // 년
+        function checkYear() {
+            
+            var $year = $("#enroll-member-form input[name=year]");
+            var $regExp = /^(1[9]|2[0])\d\d$/;
+
+            if (!$regExp.test($year.val()) || $year.val() > 2022) {
+                        
+                checkYearFlag = false;
+            }
+            else {
+
+                checkYearFlag = true;
+            }
+            if ($year.val() == '') {
+
+                checkYearFlag = false;
+            }
+        }
+        // 월
+        function checkDate() {
+            
+            var $date = $("#enroll-member-form input[name=date]").val();
+            var $month = $("#enroll-member-form select[name=month]").val();
+            var $year = $("#enroll-member-form input[name=year]").val();
+            var $regExp = /^[0-9]{1,2}$/;
+            
+            if (!$regExp.test($date)) {
+
+                checkDateFlag = false;
+            }
+            else {
+
+                if ($month == 1 || $month == 3 || $month == 5 || $month == 7 || $month == 8 || $month == 10 || $month == 12) {
+                    
+                    if ($date > 31) {
+
+                        checkDateFlag = false;
                     }
-                    // 2월 윤년 체크
-                    if ($month == 2) {
-                        
-                        // 입력한 년도가 4로 나눠질 때 - 윤년
-                        if ($year % 4 == 0) {
+                    else {
 
-                            // 입력한 년도가 4로 나눠지고 100으로도 나눠질 때 - 윤년 아님
-                            if ($year % 100 == 0) {
+                        checkDateFlag = true;
+                    }
+                }
+                if ($month == 4 || $month == 6 || $month == 9 || $month == 11) {
+                    
+                    if ($date > 30) {
 
-                                // 입력한 년도가 4, 100으로 나눠지고 400으로도 나눠질 때 - 윤년
-                                if ($year % 400 == 0) {
+                        checkDateFlag = false;
+                    }
+                    else {
 
-                                    if ($date > 29) {
-    
-                                        checkDateFlag = false;
-                                    }
-                                    else {
+                        checkDateFlag = true;
+                    }
+                }
+                // 2월 윤년 체크
+                if ($month == 2) {
+                    
+                    // 입력한 년도가 4로 나눠질 때 - 윤년
+                    if ($year % 4 == 0) {
 
-                                        checkDateFlag = true;
-                                    }
-                                } else {
-                                    
-                                    if ($date > 28) {
-    
-                                        checkDateFlag = false;
-                                    }
-                                    else {
+                        // 입력한 년도가 4로 나눠지고 100으로도 나눠질 때 - 윤년 아님
+                        if ($year % 100 == 0) {
 
-                                        checkDateFlag = true;
-                                    }
-                                }
-                            }
-                            else {
-                                
+                            // 입력한 년도가 4, 100으로 나눠지고 400으로도 나눠질 때 - 윤년
+                            if ($year % 400 == 0) {
+
                                 if ($date > 29) {
-                                    
+
+                                    checkDateFlag = false;
+                                }
+                                else {
+
+                                    checkDateFlag = true;
+                                }
+                            } else {
+                                
+                                if ($date > 28) {
+
                                     checkDateFlag = false;
                                 }
                                 else {
@@ -922,9 +926,9 @@
                             }
                         }
                         else {
-
-                            if ($date > 28) {
-    
+                            
+                            if ($date > 29) {
+                                
                                 checkDateFlag = false;
                             }
                             else {
@@ -933,202 +937,219 @@
                             }
                         }
                     }
+                    else {
+
+                        if ($date > 28) {
+
+                            checkDateFlag = false;
+                        }
+                        else {
+
+                            checkDateFlag = true;
+                        }
+                    }
                 }
             }
+        }
 
-            // 휴대전화번호 조건 확인, 결과 출력
-            function checkPhone(){
+        // 휴대전화번호 조건 확인, 결과 출력
+        function checkPhone() {
 
-                var $phoneF = $("#enroll-member-form select[name=phoneF]").val();
-                var $phoneM = $("#enroll-member-form input[name=phoneM]").val();
-                var $phoneB = $("#enroll-member-form input[name=phoneB]").val();
-                var $phone = $phoneF + "-" + $phoneM + "-" + $phoneB;
-                var $checkPhoneResult = $("#enroll-member-form span[name=checkPhoneResult]");
-                var $regExp = /^[0-9]{4}$/;
+            var $phoneF = $("#enroll-member-form select[name=phoneF]").val();
+            var $phoneM = $("#enroll-member-form input[name=phoneM]").val();
+            var $phoneB = $("#enroll-member-form input[name=phoneB]").val();
+            var $phone = $phoneF + "-" + $phoneM + "-" + $phoneB;
+            var $checkPhoneResult = $("#enroll-member-form span[name=checkPhoneResult]");
+            var $regExp = /^[0-9]{4}$/;
 
-                $.ajax({
+            $.ajax({
 
-                    url : "checkPhone.me",
-                    data : {inputPhone : $phone},
-                    success : function(result){
+                url : "checkPhone.me",
+                data : {inputPhone : $phone},
+                success : function(result) {
+                    
+                    if (result < 1) {
                         
-                        if (result < 1) {
-                            
-                            $checkPhoneResult.css('color', 'green');
-                            $checkPhoneResult.html('사용 가능한 휴대전화번호 입니다.');
+                        $checkPhoneResult.css('color', 'green');
+                        $checkPhoneResult.html('사용 가능한 휴대전화번호 입니다.');
 
-                            checkPhoneFlag = true;
-                        }
-                        if (result == 1) {
+                        checkPhoneFlag = true;
+                    }
+                    if (result == 1) {
 
-                            $checkPhoneResult.css('color', 'red');
-                            $checkPhoneResult.html('중복되는 사용자가 있습니다.');
-
-                            checkPhoneFlag = false;
-                        }
-                        if (!$regExp.test($phoneM) || !$regExp.test($phoneB)) {
-                            
-                            $checkPhoneResult.css('color', 'red');
-                            $checkPhoneResult.html('휴대전화번호를 전부 입력해주세요.');
-
-                            checkPhoneFlag = false;
-                        }
-                        if ($phoneM == '' || $phoneB == '') {
-
-                            $checkPhoneResult.html('');
-
-                            checkPhoneFlag = false;
-                        }
-                    },
-                    error : function(){
-
-                        console.log('phone check error');
+                        $checkPhoneResult.css('color', 'red');
+                        $checkPhoneResult.html('중복되는 사용자가 있습니다.');
 
                         checkPhoneFlag = false;
                     }
-                });
-            }
-
-            // input number type 글자수 제한 기능
-            function inputNumberMaxLength(object) {
-                
-                if (object.value.length > object.maxLength) {
-                    
-                    object.value = object.value.slice(0, object.maxLength)
-                }
-            }
-
-            // 각각의 조건들 조건에 안맞을 시 회원가입 버튼 누르면 얼럿으로 안내, 해당 input으로 이동
-            function checkAll() {
-
-                var enrollForm = document.getElementById('enroll-member-form');
-
-                if (checkIdFlag == false) {
-
-                    alert('아이디를 조건에 맞게 작성해주세요.');
-                    enrollForm.userId.focus();
-
-                    return false;
-                }
-                if (checkPwdFlag == false) {
-
-                    alert('비밀번호를 조건에 맞게 작성해주세요.');
-                    enrollForm.userPwd.focus();
-
-                    return false;
-                }
-                if (checkMatchPwdFlag == false) {
-                    
-                    alert('비밀번호가 일치하지 않습니다.');
-                    enrollForm.matchPwd.focus();
-                    
-                    return false;
-                }
-                if (checkEmailFlag == false) {
-
-                    alert('이메일을 조건에 맞게 작성해주세요.');
-                    enrollForm.eamil.focus();
-
-                    return false;
-                }
-                if (checkNameFlag == false) {
-
-                    alert('이름을 조건에 맞게 작성해주세요.');
-                    enrollForm.userName.focus();
-                    
-                    return false;
-                }
-                if (checkNicknameFlag == false) {
-
-                    alert('닉네임을 조건에 맞게 작성해주세요.');
-                    enrollForm.userNickname.focus();
-                    
-                    return false;
-                }
-                if (checkYearFlag == false) {
-
-                    alert('생년월일을 다시 확인해주세요.');
-                    enrollForm.year.value = '';
-                    enrollForm.year.focus();
-
-                    return false;
-                }
-                if (checkDateFlag == false) {
-
-                    alert('생년월일을 다시 확인해주세요.');
-                    enrollForm.date.value = '';
-                    enrollForm.date.focus();
-
-                    return false;
-                }
-                if (checkPhoneFlag == false) {
-
-                    alert('휴대전화번호를 조건에 맞게 작성해주세요.');
-                    enrollForm.phone.focus();
-                    
-                    return false;
-                }
-
-                return true;
-            }
-
-        </script>
-
-        <!-- Daum 우편번호 서비스 -->
-        <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-        <script>
-
-            function sample6_execDaumPostcode() {
-                new daum.Postcode({
-                    oncomplete: function(data) {
-                        // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
-
-                        // 각 주소의 노출 규칙에 따라 주소를 조합한다.
-                        // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
-                        var addr = ''; // 주소 변수
-                        var extraAddr = ''; // 참고항목 변수
-
-                        //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
-                        if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
-                            addr = data.roadAddress;
-                        } else { // 사용자가 지번 주소를 선택했을 경우(J)
-                            addr = data.jibunAddress;
-                        }
-
-                        // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
-                        if(data.userSelectedType === 'R'){
-                            // 법정동명이 있을 경우 추가한다. (법정리는 제외)
-                            // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
-                            if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
-                                extraAddr += data.bname;
-                            }
-                            // 건물명이 있고, 공동주택일 경우 추가한다.
-                            if(data.buildingName !== '' && data.apartment === 'Y'){
-                                extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
-                            }
-                            // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
-                            if(extraAddr !== ''){
-                                extraAddr = ' (' + extraAddr + ')';
-                            }
-                            // 조합된 참고항목을 해당 필드에 넣는다.
-                            document.getElementById("sample6_extraAddress").value = extraAddr;
+                    if (!$regExp.test($phoneM) || !$regExp.test($phoneB)) {
                         
-                        } else {
-                            document.getElementById("sample6_extraAddress").value = '';
-                        }
+                        $checkPhoneResult.css('color', 'red');
+                        $checkPhoneResult.html('휴대전화번호를 전부 입력해주세요.');
 
-                        // 우편번호와 주소 정보를 해당 필드에 넣는다.
-                        document.getElementById('sample6_postcode').value = data.zonecode;
-                        document.getElementById("sample6_address").value = addr;
-                        // 커서를 상세주소 필드로 이동한다.
-                        document.getElementById("sample6_detailAddress").focus();
+                        checkPhoneFlag = false;
                     }
-                }).open();
+                    if ($phoneM == '' || $phoneB == '') {
+
+                        $checkPhoneResult.html('');
+
+                        checkPhoneFlag = false;
+                    }
+                },
+                error : function() {
+
+                    console.log('phone check error');
+
+                    checkPhoneFlag = false;
+                }
+            });
+        }
+
+        // input number type 글자수 제한 기능
+        function inputNumberMaxLength(object) {
+            
+            if (object.value.length > object.maxLength) {
+                
+                object.value = object.value.slice(0, object.maxLength)
+            }
+        }
+
+        // 각각의 조건들 조건에 안맞을 시 회원가입 버튼 누르면 얼럿으로 안내, 해당 input으로 이동
+        function checkAll() {
+            
+            var enrollForm = document.getElementById('enroll-member-form');
+            
+            if (checkIdFlag == false) {
+
+                alert('아이디를 조건에 맞게 작성해주세요.');
+                enrollForm.userId.focus();
+
+                return false;
+            }
+            if (checkPwdFlag == false) {
+
+                alert('비밀번호를 조건에 맞게 작성해주세요.');
+                enrollForm.userPwd.focus();
+
+                return false;
+            }
+            if (checkMatchPwdFlag == false) {
+                
+                alert('비밀번호가 일치하지 않습니다.');
+                enrollForm.matchPwd.focus();
+                
+                return false;
+            }
+            if (checkEmailFlag == false) {
+
+                alert('이메일 주소를 조건에 맞게 작성해주세요.');
+                enrollForm.email.focus();
+
+                return false;
+            }
+            if (checkRandomCodeFlag == false) {
+
+                alert('이메일 인증을 완료해주세요.');
+                enrollForm.randomCode.focus();
+
+                return false;
+            }
+            if (checkNameFlag == false) {
+
+                alert('이름을 조건에 맞게 작성해주세요.');
+                enrollForm.userName.focus();
+                
+                return false;
+            }
+            if (checkNicknameFlag == false) {
+
+                alert('닉네임을 조건에 맞게 작성해주세요.');
+                enrollForm.userNickname.focus();
+                
+                return false;
+            }
+            if (checkYearFlag == false) {
+
+                alert('생년월일을 다시 확인해주세요.');
+                enrollForm.year.value = '';
+                enrollForm.year.focus();
+
+                return false;
+            }
+            if (checkDateFlag == false) {
+
+                alert('생년월일을 다시 확인해주세요.');
+                enrollForm.date.value = '';
+                enrollForm.date.focus();
+
+                return false;
+            }
+            if (checkPhoneFlag == false) {
+
+                alert('휴대전화번호를 조건에 맞게 작성해주세요.');
+                enrollForm.phone.focus();
+                
+                return false;
             }
 
-        </script>
+            return true;
+        }
 
-	</div>
+    </script>
+
+    <!-- Daum 우편번호 서비스 -->
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script>
+
+        function sample6_execDaumPostcode() {
+            new daum.Postcode({
+                oncomplete: function(data) {
+                    // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                    // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                    // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                    var addr = ''; // 주소 변수
+                    var extraAddr = ''; // 참고항목 변수
+
+                    //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                    if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                        addr = data.roadAddress;
+                    } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                        addr = data.jibunAddress;
+                    }
+
+                    // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+                    if(data.userSelectedType === 'R'){
+                        // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                        // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                        if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                            extraAddr += data.bname;
+                        }
+                        // 건물명이 있고, 공동주택일 경우 추가한다.
+                        if(data.buildingName !== '' && data.apartment === 'Y'){
+                            extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                        }
+                        // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                        if(extraAddr !== ''){
+                            extraAddr = ' (' + extraAddr + ')';
+                        }
+                        // 조합된 참고항목을 해당 필드에 넣는다.
+                        document.getElementById("sample6_extraAddress").value = extraAddr;
+                    
+                    } else {
+                        document.getElementById("sample6_extraAddress").value = '';
+                    }
+
+                    // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                    document.getElementById('sample6_postcode').value = data.zonecode;
+                    document.getElementById("sample6_address").value = addr;
+                    // 커서를 상세주소 필드로 이동한다.
+                    document.getElementById("sample6_detailAddress").focus();
+                }
+            }).open();
+        }
+
+    </script>
 
 </body>
 </html>

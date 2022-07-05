@@ -43,7 +43,7 @@ public class AjaxAuthenticationCheckRandomCodeController extends HttpServlet {
 		int result = 0;
 		
 		// 이메일 입력 값이 없을 때
-		if (inputEmail == "") { 
+		if (inputEmail == "" || inputEmail.contains(" ")) { 
 			
 			result = 4; // 이메일 주소를 입력해주세요.
 			

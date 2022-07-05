@@ -71,5 +71,35 @@ public class MemberService {
 		
 		return result;
 	}
+
+	public String findIdMember(Member inputList) {
+		
+		Connection conn = getConnection();
+		String userId = new MemberDao().findIdMember(conn, inputList);
+		
+		close(conn);
+		
+		return userId;
+	}
+
+	public int findPwdMember(Member inputList) {
+
+		Connection conn = getConnection();
+		int result = new MemberDao().findPwdMember(conn, inputList);
+		
+		close(conn);
+		
+		return result;
+	}
+
+	public int checkEmailFindPwd(Member inputList) {
+		
+		Connection conn = getConnection();
+		int result = new MemberDao().checkEmailFindPwd(conn, inputList);
+		
+		close(conn);
+		
+		return result;
+	}
 	
 }
