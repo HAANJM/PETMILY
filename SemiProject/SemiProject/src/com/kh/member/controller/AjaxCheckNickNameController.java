@@ -7,17 +7,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.kh.member.model.service.MemberService;
+
 /**
- * Servlet implementation class LoginFormController
+ * Servlet implementation class AjaxIdCheckController
  */
-@WebServlet("/loginForm.me")
-public class LoginFormController extends HttpServlet {
+@WebServlet("/checkNickname.me")
+public class AjaxCheckNickNameController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public LoginFormController() {
+    public AjaxCheckNickNameController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -27,7 +29,13 @@ public class LoginFormController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		request.getRequestDispatcher("views/member/loginMember.jsp").forward(request, response);
+		String inputNickname = request.getParameter("inputNickname");
+		
+		int result = new MemberService().checkNickname(inputNickname);
+		
+		response.setContentType("text/html; charset=UTF-8");
+		
+		response.getWriter().print(result);
 	}
 
 	/**

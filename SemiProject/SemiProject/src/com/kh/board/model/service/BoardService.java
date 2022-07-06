@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import com.kh.adoption.model.vo.Animal;
 import com.kh.board.model.dao.BoardDao;
+import com.kh.board.model.vo.Board;
 import com.kh.product.model.vo.Product;
 
 public class BoardService {
@@ -37,13 +38,52 @@ public class BoardService {
 		
 	}
 	
-	public void selectAdoptComment(int userNo) {
+	public ArrayList<Board> selectAdoptComment(int userNo) {
 		
 		Connection conn = getConnection();
 		
-		new BoardDao().selectAdoptComment(conn, userNo);
+		ArrayList<Board> list = new BoardDao().selectAdoptComment(conn, userNo);
 		
 		close(conn);
+		
+		return list;
+		
+	}
+
+	public ArrayList<Board> selectVolunteerComment(int userNo) {
+
+		Connection conn = getConnection();
+		
+		ArrayList<Board> list = new BoardDao().selectVolunteerComment(conn, userNo);
+		
+		close(conn);
+		
+		return list;
+		
+	}
+
+	public ArrayList<Board> selectVolunteerRecruit(int userNo) {
+
+		Connection conn = getConnection();
+		
+		ArrayList<Board> list = new BoardDao().selectVolunteerRecruit(conn, userNo);
+		
+		close(conn);
+		
+		return list;
+		
+		
+	}
+
+	public ArrayList<Animal> selectAnimalPost(int userNo) {
+
+		Connection conn = getConnection();
+		
+		ArrayList<Animal> list = new BoardDao().selectAnimalPost(conn, userNo);
+		
+		close(conn);
+		
+		return list;
 		
 	}
 	

@@ -27,10 +27,11 @@ public class LogoutMemberController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		// session 무효화
 		request.getSession().invalidate();
 		
+		// 메인 페이지로 이동
 		response.sendRedirect(request.getContextPath());
-		
 	}
 
 	/**

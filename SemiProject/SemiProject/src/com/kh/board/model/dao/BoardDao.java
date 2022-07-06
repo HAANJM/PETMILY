@@ -114,7 +114,7 @@ public class BoardDao {
 		
 	}
 
-	public void selectAdoptComment(Connection conn, int userNo) {
+	public ArrayList<Board> selectAdoptComment(Connection conn, int userNo) {
 		
 		ArrayList<Board> list = new ArrayList();
 		
@@ -129,12 +129,27 @@ public class BoardDao {
 			pstmt.setInt(1, userNo);
 			
 			rset = pstmt.executeQuery();
+			
+			while(rset.next()) {
+				
+				list.add(new Board(rset.getInt("COM_NO"),
+								   rset.getInt("USER_NO"),
+								   rset.getInt("COUNT"),
+								   rset.getDate("CREATE_DATE"),
+								   rset.getString("COM_TITLE")));
+				
+				
+			}
 					
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
 		}
 		
+		return list;
 		
 		
 		
@@ -143,6 +158,128 @@ public class BoardDao {
 		
 		
 		
+		
+		
+		
+		
+	}
+
+	public ArrayList<Board> selectVolunteerComment(Connection conn, int userNo) {
+
+		ArrayList<Board> list = new ArrayList();
+		
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String sql = prop.getProperty("selectVolunteerComment");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, userNo);
+			
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()) {
+				
+				list.add(new Board(rset.getInt("COM_NO"),
+								   rset.getInt("USER_NO"),
+								   rset.getInt("COUNT"),
+								   rset.getDate("CREATE_DATE"),
+								   rset.getString("COM_TITLE")));
+				
+				
+			}
+					
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return list;
+		
+		
+	}
+
+	public ArrayList<Board> selectVolunteerRecruit(Connection conn, int userNo) {
+
+		ArrayList<Board> list = new ArrayList();
+		
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String sql = prop.getProperty("selectVolunteerRecruit");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, userNo);
+			
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()) {
+				
+				list.add(new Board(rset.getInt("COM_NO"),
+								   rset.getInt("USER_NO"),
+								   rset.getInt("COUNT"),
+								   rset.getDate("CREATE_DATE"),
+								   rset.getString("COM_TITLE")));
+				
+				
+			}
+					
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return list;
+		
+	}
+
+	public ArrayList<Animal> selectAnimalPost(Connection conn, int userNo) {
+
+		ArrayList<Animal> list = new ArrayList();
+		
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String sql = prop.getProperty("selectAnimalPost");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, userNo);
+			
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()) {
+				
+				list.add(new Animal(rset.getInt("ANIMAL_NO"),
+								      rset.getString("CATEGORY_NAME"),
+								      rset.getString("ANIMAL_NAME"),
+								      rset.getString("GENDER"),
+								      rset.getString("NEUTRALIZATION"),
+								      rset.getInt("ANIMAL_AGE"),
+								      rset.getInt("ANIMAL_WEIGHT")));
+				
+				
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return list;
 		
 		
 		

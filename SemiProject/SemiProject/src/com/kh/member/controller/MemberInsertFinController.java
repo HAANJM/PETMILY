@@ -8,16 +8,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class LoginFormController
+ * Servlet implementation class MemberInsertFinController
  */
-@WebServlet("/loginForm.me")
-public class LoginFormController extends HttpServlet {
+@WebServlet("/insertFin.me")
+public class MemberInsertFinController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public LoginFormController() {
+    public MemberInsertFinController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -27,7 +27,7 @@ public class LoginFormController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		request.getRequestDispatcher("views/member/loginMember.jsp").forward(request, response);
+		request.getRequestDispatcher("views/member/enrollMemberFin.jsp").forward(request, response);
 	}
 
 	/**

@@ -17,6 +17,20 @@ public class Board {
 	public Board() {
 		super();
 	}
+	
+	
+	
+	public Board(int comNo, int userNo, int count, Date createDate, String comTitle) {
+		super();
+		this.comNo = comNo;
+		this.userNo = userNo;
+		this.count = count;
+		this.createDate = createDate;
+		this.comTitle = comTitle;
+	}
+
+
+
 	public Board(int comNo, int userNo, int likeCount, int count, Date createDate, String comTitle, String comSummary,
 			String comContent, int comType, String status) {
 		super();
