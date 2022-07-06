@@ -22,41 +22,6 @@ public class MemberService {
 		
 	}
 	
-	public int deleteMember(String userId, String userPwd) {
-		
-		Connection conn = getConnection();
-		
-		int result = new MemberDao().deleteMember(conn, userId, userPwd);
-		
-		if(result > 0) {
-			commit(conn);
-		} else {
-			rollback(conn);
-		}
-		
-		close(conn);
-		
-		return result;
-		
-	}
-	
-	public int updateProfile(String userNo, String nickname) {
-		
-		Connection conn = getConnection();
-		
-		int result = new MemberDao().updateProfile(conn, userNo, nickname);
-		
-		if(result > 0) {
-			commit(conn);
-		} else {
-			rollback(conn);
-		}
-		
-		close(conn);
-		
-		return result;
-		
-	}
 	
 
 }
