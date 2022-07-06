@@ -5,6 +5,7 @@
 	<comment>멤버관련 쿼리문들</comment>
 	
 	<entry key="loginMember">
+	
 		SELECT 
 				USER_NO, 
 				USER_ID, 
@@ -27,34 +28,69 @@
 		   AND 
 		   		STATUS = 'Y'
 	
-	
 	</entry>
 	
-	<entry key="deleteMember">
-		UPDATE 
-				MEMBER 
-		   SET 
-		   		STATUS = 'N'
-		 WHERE 
-		 		USER_ID = ?
-		   AND 
-		   		USER_PWD = ?
+	<entry key="insertMember">
 	
-	
-	
-	</entry>
-	
-	<entry key="updateProfile">
-	
-		UPDATE
-				MEMBER
-		   SET
-		   		USER_NICKNAME = ?
-		 WHERE
-		 		USER_NO = ?
-	
-	
-	</entry>
+		INSERT 
+		  INTO 
+		       MEMBER 
+		       (
+		       USER_NO, 
+		       USER_ID, 
+		       USER_PWD, 
+		       USER_NAME, 
+		       USER_NICKNAME, 
+		       BIRTH_DATE, 
+		       EMAIL, 
+		       ADDRESS, 
+		       PHONE,
+		       CLASS
+		       )
+        VALUES 
+               (
+               SEQ_UNO.NEXTVAL, 
+               ?, 
+               ?, 
+               ?, 
+               ?, 
+               ?, 
+               ?, 
+               ?, 
+               ?,
+               ?
+               )
 
+	</entry>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 </properties>
