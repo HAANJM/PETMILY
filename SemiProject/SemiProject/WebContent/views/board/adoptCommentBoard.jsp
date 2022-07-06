@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-<%@ page import= "com.kh.member.model.vo.Member" %>
+<%@ page import= "com.kh.member.model.vo.Member, java.util.ArrayList, com.kh.board.model.vo.Board" %>
     
 <%
 
@@ -9,12 +9,11 @@
 	
 	String contextPath = request.getContextPath();
 	
-	String alertMsg = (String)session.getAttribute("alertMsg");
-	
 	String userNickname = loginUser.getUserNickname();
 		
 	String userClass = loginUser.getUserClass();
 
+    ArrayList<Board> listADCM = (ArrayList<Board>)session.getAttribute("listADCM");
 
 %>
 <!DOCTYPE html>
@@ -22,6 +21,7 @@
 <head>
 <meta charset="UTF-8">
 <title>마이페이지</title>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
 <style>
         div{
             box-sizing: border-box;
@@ -153,23 +153,14 @@
         #footer{
             background-color: gray;
         }
+
+        
+
     </style>
 </head>
 <body>
 
 
-<script>
-
-    var msg = "<%= alertMsg %>";
-
-    if(msg != "null"){
-
-        alert(msg);
-        <% session.removeAttribute("alertMsg"); %>
-        
-    }
-
-</script>
 
     <div class="wrap">
 
@@ -220,72 +211,97 @@
 
         <div id="content">
             <div id="content_1">
-            <% if(!(userClass.equals("A"))) { %>
-                <div id="user-area">
-                    <!-- 사용자만 보이는 영역-->
-                    <% if(userClass.equals("P")) { %>
-                        <p>회원 정보 관리</p>
-                        <li><a href="<%= contextPath %>/profile.me">내 프로필 수정</a></li>
-                        <li><a href="#">회원 정보 수정</a></li>
-                        <li><a href="<%= contextPath %>/deletePage.me">회원 탈퇴</a></li>
-                       
-                       <p>내가 쓴 글 조회</p>
-                        <li><a href="#">입양 후기 게시글 조회</a></li>
-                       
-                       <p>굿즈샵</p>
-                        <li><a href="#">장바구니</a></li>
-                        <li><a href="#">구매내역/배송조회</a></li>
-                        <li><a href="#">내가 쓴 리뷰 조회</a></li>
-                       
-                       <p><a href="<%= contextPath %>/interList.bo">관심 목록</a></p>
-                        <li><a href="#">관심 등록 동물 보기</a></li>
-                        <li><a href="#">관심 등록 굿즈 보기</a></li>
-                       
-                       <p>고객센터</p>
-                        <li><a href="#">1:1 문의하기</a></li>
-                        <li><a href="#">단체 신청</a></li>
-                        <li><a href="#">문의 내역</a></li>
-                       
-                    <%  } else { %>
+                <% if(!(userClass.equals("A"))) { %>
+                    <div id="user-area">
+                        <!-- 사용자만 보이는 영역-->
+                        <% if(userClass.equals("P")) { %>
                             <p>회원 정보 관리</p>
                             <li><a href="<%= contextPath %>/profile.me">내 프로필 수정</a></li>
-                            <li><a href="#">회원 정보 수정</a></li>
+                            <li><a href="<%= contextPath %>/updateForm.me">회원 정보 수정</a></li>
+                            <li><a href="<%= contextPath %>/updatePwdForm.me">비밀번호 변경</a></li>
                             <li><a href="<%= contextPath %>/deletePage.me">회원 탈퇴</a></li>
                            
-                            <p>내가 쓴 글 조회</p>
-                            <li><a href="#">봉사 활동 모집글 조회</a></li>
-                            <li><a href="#">봉사 후기 게시글 조회</a></li>
-                            <li><a href="#">동물 등록 게시글 조회</a></li>
+                           <p>내가 쓴 글 조회</p>
+                            <li><a href="<%= contextPath %>/adoptComment.bo">입양 후기 게시글 조회</a></li>
                            
-                            <p>굿즈샵</p>
+                           <p>굿즈샵</p>
                             <li><a href="#">장바구니</a></li>
                             <li><a href="#">구매내역/배송조회</a></li>
+                            <li><a href="#">내가 쓴 리뷰 조회</a></li>
                            
-                            <p>관심 목록</p>
-                            <li><a href="#">관심 등록 동물 보기</a></li>
-                            <li><a href="#">관심 등록 굿즈 보기</a></li>
+                           <p><a href="<%= contextPath %>/interList.bo">관심 목록</a></p>
+                            <li><a href="<%= contextPath %>/interListAN.bo">관심 등록 동물 보기</a></li>
+                            <li><a href="<%= contextPath %>/interListPR.bo">관심 등록 굿즈 보기</a></li>
                            
-                            <p>고객센터</p>
+                           <p>고객센터</p>
                             <li><a href="#">1:1 문의하기</a></li>
+                            <li><a href="#">단체 신청</a></li>
                             <li><a href="#">문의 내역</a></li>
-                           </ul>
-                    <% } %>
-                    
-                </div>
-                <div id="br">
-                    <!-- 사용자영역과 관리자영역 사이 공간-->
-                </div>
-            <% } else { %>
-                <div id="admin-area">
-                    <!-- 관리자가 볼 수 있는 영역-->
-                    <p>관리자 메뉴</p>
-                        <li><a href="#">상품 등록</a></li>
-                        <li><a href="#">상품 주문내역</a></li>
-                        <li><a href="#">단체 승인</a></li>
-                        <li><a href="#">입양신청서</a></li>
-                        <li><a href="#">1:1 문의내역</a></li>
-                    
-                </div>
+                           
+                        <%  } else { %>
+                                <p>회원 정보 관리</p>
+                                <li><a href="<%= contextPath %>/profile.me">내 프로필 수정</a></li>
+                                <li><a href="<%= contextPath %>/updateForm.me">회원 정보 수정</a></li>
+                                <li><a href="<%= contextPath %>/updatePwdForm.me">비밀번호 변경</a></li>
+                                <li><a href="<%= contextPath %>/deletePage.me">회원 탈퇴</a></li>
+                               
+                                <p><a href="<%= contextPath %>/myPost.bo">내가 쓴 글 조회</a> </p>
+                                <li><a href="<%= contextPath %>/volunteerRecruit.bo">봉사 활동 모집글 조회</a></li>
+                                <li><a href="<%= contextPath %>/volunteerComment.bo">봉사 후기 게시글 조회</a></li>
+                                <li><a href="<%= contextPath %>/animalPost.bo">동물 등록 게시글 조회</a></li>
+                               
+                                <p>굿즈샵</p>
+                                <li><a href="#">장바구니</a></li>
+                                <li><a href="#">구매내역/배송조회</a></li>
+                               
+                                <p><a href="<%= contextPath %>/interList.bo">관심 목록</a></p>
+                                <li><a href="<%= contextPath %>/interListAN.bo">관심 등록 동물 보기</a></li>
+                                <li><a href="<%= contextPath %>/interListPR.bo">관심 등록 굿즈 보기</a></li>
+                               
+                                <p>고객센터</p>
+                                <li><a href="#">1:1 문의하기</a></li>
+                                <li><a href="#">문의 내역</a></li>
+                               </ul>
+                        <% } %>
+                        
+                    </div>
+                    <div id="br">
+                        <!-- 사용자영역과 관리자영역 사이 공간-->
+                    </div>
+                <% } else { %>
+                    <div id="user-area">
+                        <p>회원 정보 관리</p>
+                            <li><a href="<%= contextPath %>/profile.me">내 프로필 수정</a></li>
+                            <li><a href="<%= contextPath %>/updateForm.me">회원 정보 수정</a></li>
+                            <li><a href="<%= contextPath %>/deletePage.me">회원 탈퇴</a></li>
+                           
+                           <p>내가 쓴 글 조회</p>
+                            <li><a href="<%= contextPath %>/adoptComment.bo">입양 후기 게시글 조회</a></li>
+                           
+                           <p>굿즈샵</p>
+                            <li><a href="#">장바구니</a></li>
+                            <li><a href="#">구매내역/배송조회</a></li>
+                            <li><a href="#">내가 쓴 리뷰 조회</a></li>
+                           
+                           <p><a href="<%= contextPath %>/interList.bo">관심 목록</a></p>
+                            <li><a href="<%= contextPath %>/interListAN.bo">관심 등록 동물 보기</a></li>
+                            <li><a href="<%= contextPath %>/interListPR.bo">관심 등록 굿즈 보기</a></li>
+                           
+                           <p>고객센터</p>
+                            <li><a href="#">1:1 문의하기</a></li>
+                            <li><a href="#">단체 신청</a></li>
+                            <li><a href="#">문의 내역</a></li>
+                    </div>
+                    <div id="admin-area">
+                        <!-- 관리자가 볼 수 있는 영역-->
+                        <p>관리자 메뉴</p>
+                            <li><a href="#">상품 등록</a></li>
+                            <li><a href="#">상품 주문내역</a></li>
+                            <li><a href="#">단체 승인</a></li>
+                            <li><a href="#">입양신청서</a></li>
+                            <li><a href="#">1:1 문의내역</a></li>
+                        
+                    </div>
             <% } %>
             </div>
             <div id="content_2">
@@ -293,6 +309,9 @@
                 	
                     <div>
                         <h3>입양 후기 게시판</h3>
+                        <% if(listADCM.isEmpty()) { %>
+                            작성한 입양 후기 게시글이 없습니다.
+                        <% } else { %>
                         <table align="center">
                             <thead>
                                 <tr>
@@ -302,23 +321,15 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>3</td>
-                                    <td>귀여워요~</td>
-                                    <td>2022.06.24</td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>너무 착해요~</td>
-                                    <td>2021.05.24</td>
-                                </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>첫째에요~</td>
-                                    <td>2019.07.01</td>
-                                </tr>
+                                <% for(Board b : listADCM) { %>
+                                    <tr>
+                                        <td><%= b.getComNo() %></td>
+                                        <td><a href="<%=contextPath%>/detail.cm?cno=<%=b.getComNo()%>&type=1"><%= b.getComTitle() %></a></td>
+                                        <td><%= b.getCreateDate() %></td>
+                                    </tr>
+                                <% } %>
                             </tbody>
-
+                        <% } %>
                         </table>
                     </div>
 
