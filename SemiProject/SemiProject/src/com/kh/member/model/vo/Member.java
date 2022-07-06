@@ -10,17 +10,44 @@ public class Member {
 	private String userName; //USER_NAME	VARCHAR2(20 BYTE)
 	private String userNickname; //USER_NICKNAME	VARCHAR2(20 BYTE)
 	private Date enrollDate; //ENROLL_DATE	DATE
-	private Date birthDate; //BIRTH_DATE	DATE
+	private String birthDate; //BIRTH_DATE	DATE
 	private String email; //EMAIL	VARCHAR2(100 BYTE)
 	private String address; //ADDRESS	VARCHAR2(100 BYTE)
 	private String phone; //PHONE	VARCHAR2(20 BYTE)
 	private String status; //STATUS	VARCHAR2(1 BYTE)
 	private String userClass; //CLASS	VARCHAR2(1 BYTE)
+	
 	public Member() {
 		super();
 	}
+	public Member(String userId, String userPwd, String userName, String userNickname, String birthDate, String email,
+			String address, String phone) {
+		super();
+		this.userId = userId;
+		this.userPwd = userPwd;
+		this.userName = userName;
+		this.userNickname = userNickname;
+		this.birthDate = birthDate;
+		this.email = email;
+		this.address = address;
+		this.phone = phone;
+	}
+	// 임시로 userClass 사용, 나중에 지울 예정
+	public Member(String userId, String userPwd, String userName, String userNickname, String birthDate, String email,
+			String address, String phone, String userClass) {
+		super();
+		this.userId = userId;
+		this.userPwd = userPwd;
+		this.userName = userName;
+		this.userNickname = userNickname;
+		this.birthDate = birthDate;
+		this.email = email;
+		this.address = address;
+		this.phone = phone;
+		this.userClass = userClass;
+	}
 	public Member(int userNo, String userId, String userPwd, String userName, String userNickname, Date enrollDate,
-			Date birthDate, String email, String address, String phone, String status, String userClass) {
+			String birthDate, String email, String address, String phone, String status, String userClass) {
 		super();
 		this.userNo = userNo;
 		this.userId = userId;
@@ -35,6 +62,7 @@ public class Member {
 		this.status = status;
 		this.userClass = userClass;
 	}
+	
 	public int getUserNo() {
 		return userNo;
 	}
@@ -71,10 +99,10 @@ public class Member {
 	public void setEnrollDate(Date enrollDate) {
 		this.enrollDate = enrollDate;
 	}
-	public Date getBirthDate() {
+	public String getBirthDate() {
 		return birthDate;
 	}
-	public void setBirthDate(Date birthDate) {
+	public void setBirthDate(String birthDate) {
 		this.birthDate = birthDate;
 	}
 	public String getEmail() {
@@ -107,6 +135,7 @@ public class Member {
 	public void setUserClass(String userClass) {
 		this.userClass = userClass;
 	}
+	
 	@Override
 	public String toString() {
 		return "Member [userNo=" + userNo + ", userId=" + userId + ", userPwd=" + userPwd + ", userName=" + userName
@@ -114,7 +143,4 @@ public class Member {
 				+ ", email=" + email + ", address=" + address + ", phone=" + phone + ", status=" + status
 				+ ", userClass=" + userClass + "]";
 	}
-	
-	
-
 }

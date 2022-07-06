@@ -21,25 +21,23 @@ public class MemberDao {
 		String file = MemberDao.class.getResource("/sql/member/member-mapper.xml").getPath();
 		
 		try {
+			
 			prop.loadFromXML(new FileInputStream(file));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
 	}
 
 	public Member loginMember(Connection conn, String userId, String userPwd) {
 		
 		Member m = null;
-		
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		
 		String sql = prop.getProperty("loginMember");
 		
 		try {
-			pstmt = conn.prepareStatement(sql);
 			
+			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, userId);
 			pstmt.setString(2, userPwd);
 			
@@ -53,14 +51,13 @@ public class MemberDao {
 							   rset.getString("USER_NAME"),
 							   rset.getString("USER_NICKNAME"),
 							   rset.getDate("ENROLL_DATE"),
-							   rset.getDate("BIRTH_DATE"),
+							   rset.getString("BIRTH_DATE"),
 							   rset.getString("EMAIL"),
 							   rset.getString("ADDRESS"),
 							   rset.getString("PHONE"),
 							   rset.getString("STATUS"),
 							   rset.getString("CLASS"));
 			}
-			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -68,63 +65,37 @@ public class MemberDao {
 			close(pstmt);
 		}
 		
-		
-		
 		return m;
-		
-		
 	}
-
-	public int deleteMember(Connection conn, String userId, String userPwd) {
 	
+	public int insertMember(Connection conn, Member m) {
+		
 		int result = 0;
 		PreparedStatement pstmt = null;
-		
-		String sql = prop.getProperty("deleteMember");
+		String sql = prop.getProperty("insertMember");
 		
 		try {
-			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setString(1, userId);
-			pstmt.setString(2, userPwd);
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, m.getUserId());
+			pstmt.setString(2, m.getUserPwd());
+			pstmt.setString(3, m.getUserName());
+			pstmt.setString(4, m.getUserNickname());
+			pstmt.setString(5, m.getBirthDate());
+			pstmt.setString(6, m.getEmail());
+			pstmt.setString(7, m.getAddress());
+			pstmt.setString(8, m.getPhone());
+			pstmt.setString(9, m.getUserClass());
 			
 			result = pstmt.executeUpdate();
-			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			close(pstmt);
 		}
 		
+		System.out.println(result);
 		return result;
 	}
-
-	public int updateProfile(Connection conn, String userNo, String nickname) {
-		
-		int result = 0;
-		
-		PreparedStatement pstmt = null;
-		
-		String sql = prop.getProperty("updateProfile");
-		
-		try {
-			pstmt = conn.prepareStatement(sql);
-			
-			pstmt.setString(1, nickname);
-			pstmt.setInt(2, Integer.parseInt(userNo));
-			
-			result = pstmt.executeUpdate();
-			
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close(pstmt);
-		}
-			return result;
-		
-	}
 	
-
 }
